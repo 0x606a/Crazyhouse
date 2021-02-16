@@ -204,15 +204,12 @@ public class CrazyhouseGame extends Game implements Serializable{
 	public void setBoard(String state) {
 		// Note: This method is for automatic testing. A regular game would not start at some artificial state.
 		//       It can be assumed that the state supplied is a regular board that can be reached during a game.
-		// TODO: implement
+		board = state;
 	}
 
 	@Override
 	public String getBoard() {
-		// TODO: implement
-		
-		// replace with real implementation
-		return "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/";
+		return board;
 	}
 
 	@Override
