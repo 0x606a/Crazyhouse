@@ -6,31 +6,20 @@ import java.util.*;
 
 public class Bauer extends Figur
 {
-	/*
 	private List<String> validmove=new ArrayList<String>();
-    public Bauer(char name, String startposition)
+    public Bauer(String player )
     {
-        super(name, startposition);
+        super(player);
     }
     //gebe Anhand der Position auf dem Spielfeld eine Liste mit den möglichen züge zurück
 
-    public String validMoves(String currentPosition,boolean whitenext)
+    public List<String> validMoves(String currentPosition)
     {
-        int spalte=convertChar(currentPosition.charAt(0));
-        int zeile=(int)currentPosition.charAt(1);   // ascii wert vom wer der zeile
-
-        if(!whitenext && zeile>55)      // frage ab ob weiß als nächstes am Zug ist und ob die nächste reihe nicht die endreihe ist
-        {
-
-            validmove.add();
-        }
-
-
-
-        return this.validmove;
+        return validmove;
+       
     }
 
-    public int convertChar(char c)
+    /*public int convertChar(char c)
     {
 
         switch (c.toLowerCase())
@@ -65,4 +54,5 @@ public class Bauer extends Figur
         }
     }
     */
+    
 }
