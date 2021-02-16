@@ -21,7 +21,7 @@ public class CrazyhouseGame extends Game implements Serializable{
 	private Player whitePlayer;
 
 	// internal representation of the game state
-	// TODO: insert additional game data here
+	private String board = "////////";
 
 	/************************
 	 * constructors
