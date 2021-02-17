@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Turm extends Figur
 {
-	private List<String> validmove;
+	private ArrayList<String> validmove;
 	
 	public Turm (String player)
 	{
@@ -13,12 +13,12 @@ public class Turm extends Figur
 	}
 
 	@Override
-	public List<String> validMoves(char[][] board, int x, int y)throws Exception 
+	public ArrayList<String> validMoves(char[][] board, int x, int y)throws Exception 
 	{
 		this.validmove.clear();
 		if(x >7 || y>7 || y<0 || x<0)// prüfe ob die Boardgrenze erreicht ist
     	{	
-    		throw new Exception(" Uebergebene Position fuer den Turm liegt nicht auf dem Spielfeld");
+    		throw new Exception(" uebergebene Position fuer den Turm liegt nicht auf dem Spielfeld");
     		
     	}
 		if ( this.getPlayer()=="w")

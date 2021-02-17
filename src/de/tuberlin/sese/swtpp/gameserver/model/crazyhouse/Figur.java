@@ -6,7 +6,7 @@ import java.util.List;
 public abstract class Figur
 {
 
-	private List<String> validmove;			// Array List die die möglichen Züge zurück gibt
+	private ArrayList<String> validmove;			// Array List die die möglichen Züge zurück gibt
 	private String player;// Farbe des Spielers
    
     public Figur (String player)
@@ -18,7 +18,7 @@ public abstract class Figur
     public String getPlayer() {return player;}
   
     
-    public abstract List<String> validMoves(char[][] board, int x, int y)throws Exception; // kriegt beim Aufruf auf dem Feld die Startposition
+    public abstract ArrayList<String> validMoves(char[][] board, int x, int y)throws Exception; // kriegt beim Aufruf auf dem Feld die Startposition
     public String generateString(int x, int y)
     {
     	String zeile="";
