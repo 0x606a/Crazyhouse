@@ -15,11 +15,47 @@ public abstract class Figur
        this.player=player;
     }
 
-  public String getPlayer() {return player;}
+    public String getPlayer() {return player;}
+  
     
-    public List<String> validMoves(Board board, int x, int y) // kriegt beim Aufruf auf dem Feld die Startposition
+    public abstract List<String> validMoves(char[][] board, int x, int y); // kriegt beim Aufruf auf dem Feld die Startposition
+    public String generateString(int x, int y)
     {
-    	return validmove;
+    	String zeile="";
+    	switch (y)
+        {
+            case 0:
+               zeile= "a";
+                break;
+            case 1:
+            	zeile= "b";
+                break;
+            case 2:
+            	zeile= "c";
+                break;
+            case 3:
+                zeile= "d";
+                break;
+            case 4:
+            	zeile= "e";
+                break;
+            case 5:
+            	zeile= "f";
+                break;
+            case 6:
+            	zeile= "g";
+                break;
+            case 7:
+            	zeile= "h";
+                break;
+            default:
+                System.out.print("keine gueltige Position!");
+                break;
+        }
+    	
+    	String zugString= ""+x+zeile;
+    	return zugString;
     }
-
+ 
+    
 }

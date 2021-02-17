@@ -1,22 +1,75 @@
 package de.tuberlin.sese.swtpp.gameserver.model.crazyhouse;
 
 import java.io.Serializable;
-import java.util.LinkedList;
 import java.util.*;
-
+import Character
 public class Bauer extends Figur
 {
-	private List<String> validmove=new ArrayList<String>();
+	private List<String> validmove;
     public Bauer(String player )
     {
         super(player);
     }
     //gebe Anhand der Position auf dem Spielfeld eine Liste mit den m√∂glichen z√ºge zur√ºck
 
-    public List<String> validMoves(String currentPosition)
+    public List<String> validMoves(char[][]board, int x, int y)
     {
-        return validmove;
-       
+    	this.validmove.clear(); // leere die alte Liste
+    	
+    	if(x >=7 || y>7 || y<0 || x<=0)// pr¸fe ob die Boardgrenze erreicht ist
+    	{	
+    		throw new Exception(" Uebergebene Position fuer den Bauern liegt nicht auf dem Spielfeld");
+    		
+    	}
+        	// pr¸fe ob eine Figur mit gleicher Farbe auf dem Zielfeld steht
+        	// speichere ¸brige Ziele in validmoves
+        	
+       else
+        {
+    	   if ( this.getPlayer()=="w")
+           {
+           	
+	        	if(Character.isLowerCase(board[x+1][y+1]))
+	        	{
+	        		String move=this.generateString(x+1, y+1);
+	        		this.validmove.add(move);
+	        	}
+	        		
+	        	if(Character.isLowerCase(board[x+1][y-1]))
+	        	{
+	        		String move=this.generateString(x+1, y-1);
+	        		this.validmove.add(move);
+	        	}
+	        		
+	        	if(board[x+1][y]=='\0') 
+	        	{
+	        		String move = this.generateString(+1, y);
+	        		this.validmove.add(move);
+	        	}
+	        	return this.validmove;
+        	}
+    	   else 
+           {
+    		   if(Character.isUpperCase(board[x-1][y+1]))
+	        	{
+	        		String move=this.generateString(x-1, y+1);
+	        		this.validmove.add(move);
+	        	}
+	        		
+	        	if(Character.isUpperCase(board[x-1][y-1]))
+	        	{
+	        		String move=this.generateString(x-1, y-1);
+	        		this.validmove.add(move);
+	        	}
+	        		
+	        	if(board[x-1][y]=='\0') 
+	        	{
+	        		String move = this.generateString(x-1, y);
+	        		this.validmove.add(move);
+	        	}
+	        	return this.validmove;
+           }
+        }   
     }
 
     /*public int convertChar(char c)
