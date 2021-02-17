@@ -1,8 +1,7 @@
 package de.tuberlin.sese.swtpp.gameserver.model.crazyhouse;
 
-import java.io.Serializable;
+
 import java.util.*;
-import Character
 public class Bauer extends Figur
 {
 	private List<String> validmove;
@@ -11,8 +10,9 @@ public class Bauer extends Figur
         super(player);
     }
     //gebe Anhand der Position auf dem Spielfeld eine Liste mit den mÃ¶glichen zÃ¼ge zurÃ¼ck
-
-    public List<String> validMoves(char[][]board, int x, int y)
+    
+    @Override
+    public List<String> validMoves(char[][]board, int x, int y) throws Exception
     {
     	this.validmove.clear(); // leere die alte Liste
     	
@@ -21,55 +21,51 @@ public class Bauer extends Figur
     		throw new Exception(" Uebergebene Position fuer den Bauern liegt nicht auf dem Spielfeld");
     		
     	}
-        	// prüfe ob eine Figur mit gleicher Farbe auf dem Zielfeld steht
-        	// speichere übrige Ziele in validmoves
         	
-       else
+    	if ( this.getPlayer()=="w")
         {
-    	   if ( this.getPlayer()=="w")
-           {
            	
-	        	if(Character.isLowerCase(board[x+1][y+1]))
-	        	{
-	        		String move=this.generateString(x+1, y+1);
-	        		this.validmove.add(move);
-	        	}
+	        if(Character.isLowerCase(board[x+1][y+1]))	// prüfe ob eine Figur mit gleicher Farbe auf dem Zielfeld steht
+	        {
+	        	String move=this.generateString(x+1, y+1);	// generiere aus den Indizes einen String
+	        	this.validmove.add(move);					// speichere übrige Ziele in validmoves
+	        }
 	        		
-	        	if(Character.isLowerCase(board[x+1][y-1]))
-	        	{
-	        		String move=this.generateString(x+1, y-1);
-	        		this.validmove.add(move);
-	        	}
+	        if(Character.isLowerCase(board[x+1][y-1]))
+	        {
+	        	String move=this.generateString(x+1, y-1);
+	        	this.validmove.add(move);
+	        }
 	        		
-	        	if(board[x+1][y]=='\0') 
-	        	{
-	        		String move = this.generateString(+1, y);
-	        		this.validmove.add(move);
-	        	}
-	        	return this.validmove;
-        	}
-    	   else 
-           {
-    		   if(Character.isUpperCase(board[x-1][y+1]))
-	        	{
-	        		String move=this.generateString(x-1, y+1);
-	        		this.validmove.add(move);
-	        	}
+	        if(board[x+1][y]=='\0') 
+	        {
+	        	String move = this.generateString(+1, y);
+	        	this.validmove.add(move);
+	        }
+	        return this.validmove;
+        }
+    	else 
+        {
+    		if(Character.isUpperCase(board[x-1][y+1]))
+	        {
+	        	String move=this.generateString(x-1, y+1);
+	        	this.validmove.add(move);
+	        }
 	        		
-	        	if(Character.isUpperCase(board[x-1][y-1]))
-	        	{
-	        		String move=this.generateString(x-1, y-1);
-	        		this.validmove.add(move);
-	        	}
+	        if(Character.isUpperCase(board[x-1][y-1]))
+	        {
+	        	String move=this.generateString(x-1, y-1);
+	        	this.validmove.add(move);
+	        }
 	        		
-	        	if(board[x-1][y]=='\0') 
-	        	{
-	        		String move = this.generateString(x-1, y);
-	        		this.validmove.add(move);
-	        	}
-	        	return this.validmove;
-           }
-        }   
+	        if(board[x-1][y]=='\0') 
+	        {
+	        	String move = this.generateString(x-1, y);
+	        	this.validmove.add(move);
+	        }
+	        return this.validmove;
+        }
+           
     }
 
     /*public int convertChar(char c)

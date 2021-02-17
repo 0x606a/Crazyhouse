@@ -1,7 +1,7 @@
 package de.tuberlin.sese.swtpp.gameserver.model.crazyhouse;
 import java.util.ArrayList;
 import java.util.List;
-import de.tuberlin.sese.swtpp.gameserver.model.Move;
+
 
 public abstract class Figur
 {
@@ -18,7 +18,7 @@ public abstract class Figur
     public String getPlayer() {return player;}
   
     
-    public abstract List<String> validMoves(char[][] board, int x, int y); // kriegt beim Aufruf auf dem Feld die Startposition
+    public abstract List<String> validMoves(char[][] board, int x, int y)throws Exception; // kriegt beim Aufruf auf dem Feld die Startposition
     public String generateString(int x, int y)
     {
     	String zeile="";
