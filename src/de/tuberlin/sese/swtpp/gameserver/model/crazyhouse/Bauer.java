@@ -8,6 +8,7 @@ public class Bauer extends Figur
     public Bauer(String player )
     {
         super(player);
+        this.validmove = new ArrayList<String>();
     }
     //gebe Anhand der Position auf dem Spielfeld eine Liste mit den mÃ¶glichen zÃ¼ge zurÃ¼ck
     
@@ -16,7 +17,7 @@ public class Bauer extends Figur
     {
     	this.validmove.clear(); // leere die alte Liste
     	
-    	if(x >=7 || y>7 || y<0 || x<=0)// prüfe ob die Boardgrenze erreicht ist
+    	if(x >7 || y>7 || y<0 || x<0)// prüfe ob die Boardgrenze erreicht ist
     	{	
     		throw new Exception(" uebergebene Position fuer den Bauern liegt nicht auf dem Spielfeld");
     		
@@ -26,68 +27,13 @@ public class Bauer extends Figur
         {
            	if(y>0 && y<7)
            	{
-		        if(Character.isLowerCase(board[x+1][y+1]))	// prüfe ob eine Figur mit gleicher Farbe auf dem Zielfeld steht
+		        if(Character.isLowerCase(board[x-1][y+1]))	// prüfe ob eine Figur mit gleicher Farbe auf dem Zielfeld steht
 		        {
-		        	String move=this.generateString(x+1, y+1);	// generiere aus den Indizes einen String
+		        	String move=this.generateString(x-1, y+1);	// generiere aus den Indizes einen String
 		        	this.validmove.add(move);					// speichere übrige Ziele in validmoves
 		        }
 		        		
-		        if(Character.isLowerCase(board[x+1][y-1]))
-		        {
-		        	String move=this.generateString(x+1, y-1);
-		        	this.validmove.add(move);
-		        }
-		        		
-		        if(board[x+1][y]=='\0') 
-		        {
-		        	String move = this.generateString(x+1, y);
-		        	this.validmove.add(move);
-		        }
-		        return this.validmove;
-           	}
-           	else // falls der Bauer an einem der Raender steht
-           	{
-           		if(y==0) // linker Rand
-           		{
-	           		if(Character.isLowerCase(board[x+1][y+1]))	// prüfe ob eine Figur mit gleicher Farbe auf dem Zielfeld steht
-			        {
-			        	String move=this.generateString(x+1, y+1);	// generiere aus den Indizes einen String
-			        	this.validmove.add(move);					// speichere übrige Ziele in validmoves
-			        }
-			        if(board[x+1][y]=='\0') 
-			        {
-			        	String move = this.generateString(x+1, y);
-			        	this.validmove.add(move);
-			        }
-			        return this.validmove;
-           		}
-           		if(y==7) // rechter Rand
-           		{
-	           		if(Character.isLowerCase(board[x+1][y-1]))	// prüfe ob eine Figur mit gleicher Farbe auf dem Zielfeld steht
-			        {
-			        	String move=this.generateString(x+1, y-1);	// generiere aus den Indizes einen String
-			        	this.validmove.add(move);					// speichere übrige Ziele in validmoves
-			        }
-			        if(board[x+1][y]=='\0') 
-			        {
-			        	String move = this.generateString(x+1, y);
-			        	this.validmove.add(move);
-			        }
-			        return this.validmove;
-           		}
-           	}
-        }
-    	else  // black playper
-        {
-    		if(y>0 && y<7)
-    		{
-	    		if(Character.isUpperCase(board[x-1][y+1]))
-		        {
-		        	String move=this.generateString(x-1, y+1);
-		        	this.validmove.add(move);
-		        }
-		        		
-		        if(Character.isUpperCase(board[x-1][y-1]))
+		        if(Character.isLowerCase(board[x-1][y-1]))
 		        {
 		        	String move=this.generateString(x-1, y-1);
 		        	this.validmove.add(move);
@@ -98,7 +44,58 @@ public class Bauer extends Figur
 		        	String move = this.generateString(x-1, y);
 		        	this.validmove.add(move);
 		        }
-		        return this.validmove;
+           	}
+           	else // falls der Bauer an einem der Raender steht
+           	{
+           		if(y==0) // linker Rand
+           		{
+	           		if(Character.isLowerCase(board[x-1][y+1]))	// prüfe ob eine Figur mit gleicher Farbe auf dem Zielfeld steht
+			        {
+			        	String move=this.generateString(x-1, y+1);	// generiere aus den Indizes einen String
+			        	this.validmove.add(move);					// speichere übrige Ziele in validmoves
+			        }
+			        if(board[x-1][y]=='\0') 
+			        {
+			        	String move = this.generateString(x-1, y);
+			        	this.validmove.add(move);
+			        }
+           		}
+           		if(y==7) // rechter Rand
+           		{
+	           		if(Character.isLowerCase(board[x-1][y-1]))	// prüfe ob eine Figur mit gleicher Farbe auf dem Zielfeld steht
+			        {
+			        	String move=this.generateString(x-1, y-1);	// generiere aus den Indizes einen String
+			        	this.validmove.add(move);					// speichere übrige Ziele in validmoves
+			        }
+			        if(board[x-1][y]=='\0') 
+			        {
+			        	String move = this.generateString(x-1, y);
+			        	this.validmove.add(move);
+			        }
+           		}
+           	}
+        }
+    	else  // black playper
+        {
+    		if(y>0 && y<7)
+    		{
+	    		if(Character.isUpperCase(board[x+1][y+1]))
+		        {
+		        	String move=this.generateString(x+1, y+1);
+		        	this.validmove.add(move);
+		        }
+		        		
+		        if(Character.isUpperCase(board[x+1][y-1]))
+		        {
+		        	String move=this.generateString(x+1, y-1);
+		        	this.validmove.add(move);
+		        }
+		        		
+		        if(board[x+1][y]=='\0') 
+		        {
+		        	String move = this.generateString(x+1, y);
+		        	this.validmove.add(move);
+		        }
     		}
     		else // falls der Bauer an einem der Raender steht
            	{
@@ -114,7 +111,6 @@ public class Bauer extends Figur
 			        	String move = this.generateString(x+1, y);
 			        	this.validmove.add(move);
 			        }
-			        return this.validmove;
            		}
            		if(y==7) // rechter Rand
            		{
@@ -128,7 +124,6 @@ public class Bauer extends Figur
 			        	String move = this.generateString(x+1, y);
 			        	this.validmove.add(move);
 			        }
-			        return this.validmove;
            		}
            	} 
         }
