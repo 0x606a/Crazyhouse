@@ -1,4 +1,4 @@
-package de.tuberlin.sese.swtpp.gameserver.model;
+package de.tuberlin.sese.swtpp.gameserver.model.crazyhouse;
 
 
 import java.io.Serializable;
