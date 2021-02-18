@@ -8,7 +8,7 @@ public abstract class Figur
 
 	private ArrayList<String> validmove;			// Array List die die möglichen Züge zurück gibt
 	private String player;// Farbe des Spielers
-   
+	
     public Figur (String player)
     {
     	this.validmove = new ArrayList<String>();
@@ -16,7 +16,7 @@ public abstract class Figur
     }
 
     public String getPlayer() {return player;}
-  
+    public ArrayList<String> getValidmove(){return validmove;}
     
     public abstract ArrayList<String> validMoves(char[][] board, int x, int y)throws Exception; // kriegt beim Aufruf auf dem Feld die Startposition
     public String generateString(int x, int y)
@@ -53,7 +53,7 @@ public abstract class Figur
                 break;
         }
     	
-    	String zugString= ""+x+zeile;
+    	String zugString= ""+zeile+x;
     	return zugString;
     }
  
