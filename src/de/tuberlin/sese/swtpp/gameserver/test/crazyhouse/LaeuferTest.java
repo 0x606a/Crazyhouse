@@ -45,7 +45,6 @@ public class LaeuferTest {
         board[2][5]='p';
         board[1][6]='p';
         board[0][7]='p';
-        board[7][3]='p';
         board[5][2]='p';
         board[6][1]='p';
         board[7][0]='p';
@@ -89,7 +88,6 @@ public class LaeuferTest {
         board[2][5]='P';
         board[1][6]='P';
         board[0][7]='P';
-        board[7][3]='P';
         board[5][2]='P';
         board[6][1]='P';
         board[7][0]='P';
