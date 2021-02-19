@@ -97,7 +97,7 @@ public class DameTest {
         board[4][7]='p';
         moves=d1.validMoves(board, 4, 0);
         assertFalse(moves.isEmpty());
-        assertEquals(moves.size(),21;
+        assertEquals(moves.size(),21);
         boardClear();
         // Dame weiß am rechten Rand
         //diagonal
