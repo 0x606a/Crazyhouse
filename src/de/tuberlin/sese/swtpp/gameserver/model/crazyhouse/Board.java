@@ -15,26 +15,34 @@ import de.tuberlin.sese.swtpp.gameserver.model.crazyhouse.Laeufer;
 import de.tuberlin.sese.swtpp.gameserver.model.crazyhouse.Turm;
 
 public class Board{
-    char [][] board;
-    String Spare_parts;
+    private char [][] board;
+    private String Spare_parts;
 
 // constructor creates 8x8 matrix with Matrix [y][x] and Spare_parts String
+
     public Board(String b){
         char [][] board= new char[8][8];
         int cnt= b.length();
-        int j = 0;
+        
+        for (int i=0; i<8;i++) {
+        	for(int j=0;j<8;j++) {
+        		board[i][j]='0';
+        	}
+        }
         int i= 0;
         while ( i<8){
-            while (j<8){
-                char temp= b.charAt(b.length()-cnt);
+        	int j = 0;
+            while (true){
+            	char temp= b.charAt(b.length()-cnt);
                 if(temp=='/'){
                     i++;
+                    cnt--;
                     break;
                 }
                 if((int) temp>48 && (int) temp <58){
                     int cur = (int) temp -48;
                     if(j+cur>7){
-                        i++;
+                        
                         j= cur-(7-j);
                         cnt --;
                     }
@@ -50,17 +58,26 @@ public class Board{
                 }
             }
         }
-        Spare_parts = new String();
-        for(i=b.length()-cnt; i< b.length(); i++){
-            Spare_parts += b.charAt(i);
+        
+        Spare_parts = new String("");
+        if(b.length()-cnt <b.length()) {
+        	for(i=b.length()-cnt; i< b.length(); i++){
+        		Spare_parts += b.charAt(i);
+        	}
         }
+        System.out.print(Spare_parts);
 
     }
     //checks if move is valid; if yes: does move, if no: throws runtimeexception
     public void checkMove(String move, String player) throws Exception {
-    	char figure;
-    	char [][] dest = board.clone();
+    	char figure='0';
+    	char [][] dest = new char[8][8];
+    	for(int i= 0; i<8; i++) {
+    		dest[i] = this.getBoard()[i].clone();
+    	}
+    	 
     	//figur aus spare parts string
+    	
     	if(move.length()==4) {
     		figure= move.charAt(0);
     		if(player=="b" & ((int) figure)<97) throw new Exception("not your token");
@@ -80,9 +97,10 @@ public class Board{
         	}
     	
     	//figur aus feld
-    	else {
+    	if(move.length()==5) {
     		int x = ((int) move.charAt(0))-97;
     		int y = 7-(((int) move.charAt(1))-49);
+    		System.out.println("x= "+ x +" y= " +y);
     		figure = board[y][x];
     		if(figure=='0') throw new Exception("no token chosen");
     		if(player=="b" & ((int) figure)<97) throw new Exception("not your token");
@@ -122,6 +140,7 @@ public class Board{
     		if(!val_moves.contains(move)) throw new Exception("No valid move");
     		else this.doMoveBoard(move, x, y, figure);
     	}
+    	else {throw new Exception("invalid move string length");}
     	
     	
     }
