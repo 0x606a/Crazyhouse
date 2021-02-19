@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class Laeufer extends Figur{
 	private ArrayList<String> validmove;
 	
-	Laeufer (String player)
+	public Laeufer(String player)
 	{
 		super(player);
 		this.validmove = new ArrayList<String>();

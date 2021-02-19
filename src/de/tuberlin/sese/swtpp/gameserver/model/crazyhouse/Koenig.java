@@ -85,8 +85,8 @@ public class Koenig extends Figur
 					String move = this.generateString(x+1, y+1);
 					this.validmove.add(move);
 				}
-				if(Character.isLowerCase(board[x+1][y-1])){
-					String move = this.generateString(x+1, y-1);
+				if(Character.isLowerCase(board[x+1][y-1])) {
+					String move = this.generateString(x + 1, y - 1);
 					this.validmove.add(move);
 				}
 			}
@@ -179,7 +179,7 @@ public class Koenig extends Figur
 						this.validmove.add(move);
 					}
 				}
-				//oberer und unterer Rand to be done?
+				//oberer und unterer Rand und gleiche figur auf feld break to be done?
 			}
 		}
 		else{  // black player
