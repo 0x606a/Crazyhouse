@@ -18,7 +18,7 @@ public class Board{
     char [][] board;
     String Spare_parts;
 
-
+// constructor creates 8x8 matrix with Matrix [y][x] and Spare_parts String
     public Board(String b){
         char [][] board= new char[8][8];
         int cnt= b.length();
@@ -56,37 +56,43 @@ public class Board{
         }
 
     }
-    public void moveBoard(String move, String player) throws RuntimeException {
+    //checks if move is valid; if yes: does move, if no: throws runtimeexception
+    public void checkMove(String move, String player) throws Exception {
     	char figure;
     	char [][] dest = board.clone();
     	//figur aus spare parts string
     	if(move.length()==4) {
     		figure= move.charAt(0);
-    		if(player=="b" & ((int) figure)<97) throw new RuntimeException("not your token");
-    		if(player=="w" & ((int) figure)>90) throw new RuntimeException("not your token");
+    		if(player=="b" & ((int) figure)<97) throw new Exception("not your token");
+    		if(player=="w" & ((int) figure)>90) throw new Exception("not your token");
     		int dest_x = (((int) move.charAt(2))-97);
         	int dest_y = (((int) move.charAt(3))-49);
-        	if(dest[dest_y][dest_x]!='0') throw new RuntimeException("invalid move!");
+        	if(dest[dest_y][dest_x]!='0') throw new Exception("invalid move!");
+        	dest = board.clone();
         	dest [dest_y][dest_x] = figure;
-    		takeSpare_part(figure);
+        	try {
+        		takeSpare_part(figure);
+        	} catch(Exception e) {
+        		throw new Exception("invalid move");
+        	}
+    		
         	board=dest;
-    		return;
+        	this.doMoveSpare(dest_x, dest_y, figure);
     		}
     	
-    	//finde figur b3-c4
-    	//a=97 h=104
+    	//figur aus feld
     	else {
     		int x = ((int) move.charAt(0))-97;
     		int y = 7-(((int) move.charAt(1))-49);
     		figure = board[y][x];
-    		if(figure=='0') throw new RuntimeException("no token chosen");
-    		if(player=="b" & ((int) figure)<97) throw new RuntimeException("not your token");
-    		if(player=="w" & ((int) figure)>90) throw new RuntimeException("not your token");
+    		if(figure=='0') throw new Exception("no token chosen");
+    		if(player=="b" & ((int) figure)<97) throw new Exception("not your token");
+    		if(player=="w" & ((int) figure)>90) throw new Exception("not your token");
     		
     		
     		ArrayList<String> val_moves= new ArrayList<>();
-    		//qbnrp
-    	//figur aufrufen(player übergeben als String)
+    		
+    		//figur aufrufen(player übergeben als String)
     		if(figure=='k' || figure=='K') {
     			Koenig k = new Koenig(player);
     			val_moves= k.validMoves(board, y, x);
@@ -112,33 +118,46 @@ public class Board{
     			Bauer b = new Bauer(player);
     			val_moves = b.validMoves(board, y, x);
     		}
-    		if(!val_moves.contains(move)) throw new RuntimeException("No valid move");
-    	//züge vergleichen
-    		dest[y][x]=0;
-    		int dest_x = (((int) move.charAt(3))-97);
-    		int dest_y = (((int) move.charAt(4))-49);
-    	
-    		if(dest[dest_y][dest_x]!='0') addSpare_part(dest[dest_y][dest_x]); 
-    		dest [dest_y][dest_x] = figure;
-    		board = dest;
+    		//züge vergleichen
+    		if(!val_moves.contains(move)) throw new Exception("No valid move");
+    		else this.doMoveBoard(move, x, y, figure);
     	}
+    	//TODO bauer wird zur dame
     	
     }
-    public char[][] getBoard(){return board;}
-    private void takeSpare_part(char f) {
+    private void doMoveBoard(String move, int x, int y, char figure) {
+    	//figur ziehen
+    	char [][] dest = board.clone();
+		dest[y][x]=0;
+		int dest_x = (((int) move.charAt(3))-97);
+		int dest_y = (((int) move.charAt(4))-49);
+		//ggf geschlagene figur zu spareparts hinzufügen
+		if(dest[dest_y][dest_x]!='0') {
+			char temp =dest[dest_y][dest_x];
+			if( temp<97) temp += 32;
+			if(temp> 90) temp -= 32;
+			addSpare_part(dest[dest_y][dest_x]); 
+		}
+		dest [dest_y][dest_x] = figure;
+		board = dest;
+    }
+    
+    //figur aus spare parts nehmen
+    private void takeSpare_part(char f) throws Exception {
     	int i = 0;
     	while(i<Spare_parts.length()) {
     		if(f== Spare_parts.charAt(i)) break;
     		i++;
     	}
     	if(i==Spare_parts.length()) {
-    		throw new RuntimeException("Unvalid move!");
+    		throw new Exception("Unvalid move!");
     	}
     	String temp = Spare_parts.substring(0, i);
     	if(i<Spare_parts.length()-1) temp += Spare_parts.substring(i+1);
     	this.Spare_parts=temp;
     }
-
+    
+    //fügt figur zu spare parts hinzu
     private void addSpare_part(char f) {
     	int val = (int) f;
     	int s = (int) Spare_parts.charAt(0);
@@ -151,9 +170,7 @@ public class Board{
     	Spare_parts = temp;
     	
     }
-    public String getSpare_parts() {
-        return Spare_parts;
-    }
+   //gibt objekt board als string zurück
     public String BoardToString() {
     	String b_String="";
     	int cnt=0;
@@ -174,5 +191,11 @@ public class Board{
     	}
     	b_String += Spare_parts;
     	return b_String;	
+    }
+    
+    //getters
+    public char[][] getBoard(){return board;}
+    public String getSpare_parts() {
+        return Spare_parts;
     }
 }
