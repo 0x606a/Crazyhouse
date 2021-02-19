@@ -3,10 +3,7 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
-import org.hamcrest.Matcher;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import de.tuberlin.sese.swtpp.gameserver.model.crazyhouse.*;
 public class KoenigTest {
@@ -16,6 +13,7 @@ public class KoenigTest {
     char[][] board = new char[8][8];
     ArrayList<String> moves= new ArrayList<String>();
     ArrayList<String>testmoves=new ArrayList<String>();
+
     @Test
     public void testConstructor()
     {
@@ -25,17 +23,13 @@ public class KoenigTest {
         assertTrue(k2.getPlayer()=="b");
     }
 
-    @Test(expected = java.lang.Exception.class)
-    public void testwrongPositionWhite() throws Exception
-    {
-        k1.validMoves(board, 8,8);
-
-    }
 
     @Test
     public void testValidMoves() throws Exception
     {
         //test Exception wenn uebergebene Position nicht auf dem Feld liegt
+
+        //Test Figur schlagen
 
         // koenig weiß im Spielfeld
         board[3][2]='k';
@@ -105,8 +99,78 @@ public class KoenigTest {
         assertEquals(moves.size(),5);
         boardClear();
 
+        // Test auf leeres feld bewegen
+
+        // koenig weiß im Spielfeld
+        board[3][2]='\0';
+        board[3][4]='\0';
+        board[3][3]='\0';
+        board[4][2]='\0';
+        board[4][4]='\0';
+        board[5][2]='\0';
+        board[5][3]='\0';
+        board[5][4]='\0';
+        moves=k1.validMoves(board, 4,3);
+        assertFalse(moves.isEmpty());
+        assertEquals(moves.size(),8);
+        boardClear();
+        // koenig weiß am linken Rand
+        board[3][1]='\0';
+        board[3][0]='\0';
+        board[4][1]='\0';
+        board[5][1]='\0';
+        board[5][0]='\0';
+        moves=k1.validMoves(board, 4, 0);
+        assertFalse(moves.isEmpty());
+        assertEquals(moves.size(),5);
+        boardClear();
+        // koenig weiß am rechten Rand
+        board[3][6]='\0';
+        board[3][7]='\0';
+        board[4][6]='\0';
+        board[5][6]='\0';
+        board[5][7]='\0';
+        moves=k1.validMoves(board, 4, 7);
+        assertFalse(moves.isEmpty());
+        assertEquals(moves.size(),5);
+        boardClear();
+
+        // koenig schwarz im Spielfeld
+        board[5][2]='\0';
+        board[5][4]='\0';
+        board[5][3]='\0';
+        board[4][2]='\0';
+        board[4][4]='\0';
+        board[3][2]='\0';
+        board[3][3]='\0';
+        board[3][4]='\0';
+        moves=k2.validMoves(board, 4,3);
+        assertFalse(moves.isEmpty());
+        assertEquals(moves.size(),8);
+        boardClear();
+        // koenig schwarz am linken Rand
+        board[5][1]='\0';
+        board[5][0]='\0';
+        board[4][1]='\0';
+        board[3][1]='\0';
+        board[3][0]='\0';
+        moves=k2.validMoves(board, 4, 0);
+        assertFalse(moves.isEmpty());
+        assertEquals(moves.size(),5);
+        boardClear();
+        // koenig schwarz am rechten Rand
+        board[5][6]='\0';
+        board[5][7]='\0';
+        board[4][6]='\0';
+        board[3][6]='\0';
+        board[3][7]='\0';
+        moves=k2.validMoves(board, 4, 7);
+        assertFalse(moves.isEmpty());
+        assertEquals(moves.size(),5);
+        boardClear();
 
     }
+
 
     private void boardClear()
     {

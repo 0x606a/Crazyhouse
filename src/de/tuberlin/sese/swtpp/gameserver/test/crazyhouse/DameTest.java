@@ -3,10 +3,7 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
-import org.hamcrest.Matcher;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import de.tuberlin.sese.swtpp.gameserver.model.crazyhouse.*;
 public class DameTest {
@@ -16,6 +13,7 @@ public class DameTest {
     char[][] board = new char[8][8];
     ArrayList<String> moves= new ArrayList<String>();
     ArrayList<String>testmoves=new ArrayList<String>();
+
     @Test
     public void testConstructor()
     {
@@ -23,197 +21,249 @@ public class DameTest {
         assertFalse(d1.getPlayer().isEmpty());
         assertTrue(d1.getPlayer()=="w");
         assertTrue(d2.getPlayer()=="b");
-    }
-
-    @Test(expected = java.lang.Exception.class)
-    public void testwrongPositionWhite() throws Exception
-    {
-        d1.validMoves(board, 8,8);
-
+        assertFalse(d1.getPlayer()=="b");
     }
 
     @Test
     public void testValidMoves() throws Exception
     {
-        //test Exception wenn übergebene Position nicht auf dem Feld liegt
+
+        //Test Figur schlagen
 
         // Dame weiß im Spielfeld
+
         //diagonal
-        board[3][2]='k';
         board[2][1]='p';
-        board[1][0]='p';
-        board[3][4]='q';
-        board[2][5]='p';
-        board[1][6]='p';
-        board[0][7]='p';
-        board[5][2]='p';
         board[6][1]='p';
-        board[7][0]='p';
-        board[5][4]='p';
+        board[2][5]='q';
         board[6][5]='p';
-        board[7][6]='p';
         //gerade
-        board[3][3]='k';
-        board[2][3]='p';
-        board[1][3]='p';
-        board[0][3]='q';
-        board[5][3]='p';
+        board[2][3]='k';
         board[6][3]='p';
-        board[7][3]='p';
-        board[4][2]='p';
         board[4][1]='p';
-        board[4][0]='p';
-        board[4][4]='p';
-        board[4][5]='p';
-        board[4][6]='p';
-        board[4][7]='p';
+        board[4][5]='q';
         moves=d1.validMoves(board, 4,3);
+        assertEquals(moves.size(),16);
+        boardClear();
+        // Dame weiß am linken Rand
+        //diagonal
+        board[2][2]='p';
+        board[6][2]='p';
+        //gerade
+        board[2][0]='k';
+        board[6][0]='p';
+        board[4][5]='p';
+        moves=d1.validMoves(board, 4, 0);
         assertFalse(moves.isEmpty());
+        assertEquals(moves.size(),13);
+        boardClear();
+        // Dame weiß am rechten Rand
+        //diagonal
+        board[2][5]='p';
+        board[6][5]='p';
+        //gerade
+        board[2][7]='k';
+        board[6][7]='p';
+        board[4][5]='p';
+        moves=d1.validMoves(board, 4, 7);
+        assertFalse(moves.isEmpty());
+        assertEquals(moves.size(),10);
+        boardClear();
+
+        // Dame schwarz im Spielfeld
+
+        //diagonal
+        board[2][1]='P';
+        board[6][1]='P';
+        board[2][5]='P';
+        board[6][5]='P';
+        //gerade
+        board[2][3]='P';
+        board[6][3]='P';
+        board[4][1]='P';
+        board[4][5]='P';
+        moves=d2.validMoves(board, 4,3);
+        assertEquals(moves.size(),16);
+        boardClear();
+        // Dame schwarz am linken Rand
+        //diagonal
+        board[2][2]='P';
+        board[6][2]='P';
+        //gerade
+        board[2][0]='P';
+        board[6][0]='P';
+        board[4][5]='P';
+        moves=d2.validMoves(board, 4, 0);
+        assertFalse(moves.isEmpty());
+        assertEquals(moves.size(),13);
+        boardClear();
+        // Dame schwarz am rechten Rand
+        //diagonal
+        board[2][5]='P';
+        board[6][5]='P';
+        //gerade
+        board[2][7]='P';
+        board[6][7]='P';
+        board[4][5]='P';
+        moves=d2.validMoves(board, 4, 7);
+        assertFalse(moves.isEmpty());
+        assertEquals(moves.size(),10);
+        boardClear();
+
+        // Test auf eigene Figur im Weg
+
+        //weiss
+        //diagonal
+        board[2][1]='P';
+        board[6][1]='P';
+        board[2][5]='P';
+        board[6][5]='P';
+        //gerade
+        board[2][3]='P';
+        board[6][3]='P';
+        board[4][1]='P';
+        board[4][5]='P';
+        moves=d1.validMoves(board, 4,3);
+        assertEquals(moves.size(),8);
+        boardClear();
+        // Dame weiß am linken Rand
+        //diagonal
+        board[2][2]='P';
+        board[6][2]='P';
+        //gerade
+        board[2][0]='P';
+        board[6][0]='P';
+        board[4][5]='P';
+        moves=d1.validMoves(board, 4, 0);
+        assertFalse(moves.isEmpty());
+        assertEquals(moves.size(),8);
+        boardClear();
+        // Dame weiß am rechten Rand
+        //diagonal
+        board[2][5]='P';
+        board[6][5]='P';
+        //gerade
+        board[2][7]='P';
+        board[6][7]='P';
+        board[4][5]='P';
+        moves=d1.validMoves(board, 4, 7);
+        assertFalse(moves.isEmpty());
+        assertEquals(moves.size(),5);
+        boardClear();
+
+        //schwarz
+        //diagonal
+        board[2][1]='p';
+        board[6][1]='p';
+        board[2][5]='p';
+        board[6][5]='p';
+        //gerade
+        board[2][3]='p';
+        board[6][3]='p';
+        board[4][1]='p';
+        board[4][5]='p';
+        moves=d2.validMoves(board, 4,3);
+        assertEquals(moves.size(),8);
+        boardClear();
+        // Dame schwarz am linken Rand
+        //diagonal
+        board[2][2]='p';
+        board[6][2]='p';
+        //gerade
+        board[2][0]='p';
+        board[6][0]='p';
+        board[4][5]='p';
+        moves=d2.validMoves(board, 4, 0);
+        assertFalse(moves.isEmpty());
+        assertEquals(moves.size(),8);
+        boardClear();
+        // Dame schwarz am rechten Rand
+        //diagonal
+        board[2][5]='p';
+        board[6][5]='p';
+        //gerade
+        board[2][7]='p';
+        board[6][7]='p';
+        board[4][5]='p';
+        moves=d2.validMoves(board, 4, 7);
+        assertFalse(moves.isEmpty());
+        assertEquals(moves.size(),5);
+        boardClear();
+
+
+        // Test auf leeres Feld
+
+        //diagonal
+        board[2][1]='\0';
+        board[6][1]='\0';
+        board[2][5]='\0';
+        board[6][5]='\0';
+        //gerade
+        board[2][3]='\0';
+        board[6][3]='\0';
+        board[4][1]='\0';
+        board[4][5]='\0';
+        moves=d1.validMoves(board, 4,3);
         assertEquals(moves.size(),27);
         boardClear();
         // Dame weiß am linken Rand
         //diagonal
-        board[3][1]='q';
-        board[2][2]='p';
-        board[1][3]='p';
-        board[0][4]='p';
-        board[5][1]='p';
-        board[6][2]='p';
-        board[7][3]='p';
+        board[2][2]='\0';
+        board[6][2]='\0';
         //gerade
-        board[3][0]='k';
-        board[2][0]='p';
-        board[1][0]='p';
-        board[0][0]='q';
-        board[5][0]='p';
-        board[6][0]='p';
-        board[7][0]='p';
-        board[4][1]='p';
-        board[4][2]='p';
-        board[4][3]='p';
-        board[4][4]='p';
-        board[4][5]='p';
-        board[4][6]='p';
-        board[4][7]='p';
+        board[2][0]='\0';
+        board[6][0]='\0';
+        board[4][5]='\0';
         moves=d1.validMoves(board, 4, 0);
         assertFalse(moves.isEmpty());
         assertEquals(moves.size(),21);
         boardClear();
         // Dame weiß am rechten Rand
         //diagonal
-        board[3][6]='q';
-        board[2][5]='p';
-        board[1][4]='p';
-        board[0][3]='p';
-        board[5][6]='p';
-        board[6][5]='p';
-        board[7][4]='p';
+        board[2][5]='\0';
+        board[6][5]='\0';
         //gerade
-        board[3][7]='k';
-        board[2][7]='p';
-        board[1][7]='p';
-        board[0][7]='q';
-        board[5][7]='p';
-        board[6][7]='p';
-        board[7][7]='p';
-        board[4][1]='p';
-        board[4][2]='p';
-        board[4][3]='p';
-        board[4][4]='p';
-        board[4][5]='p';
-        board[4][6]='p';
-        board[4][7]='p';
+        board[2][7]='\0';
+        board[6][7]='\0';
+        board[4][5]='\0';
         moves=d1.validMoves(board, 4, 7);
         assertFalse(moves.isEmpty());
         assertEquals(moves.size(),21);
         boardClear();
 
-        // Dame schwarz im Spielfeld
         //diagonal
-        board[3][2]='K';
-        board[2][1]='P';
-        board[1][0]='P';
-        board[3][4]='P';
-        board[2][5]='P';
-        board[1][6]='P';
-        board[0][7]='P';
-        board[5][2]='P';
-        board[6][1]='P';
-        board[7][0]='P';
-        board[5][4]='P';
-        board[6][5]='P';
-        board[7][6]='P';
+        board[2][1]='\0';
+        board[6][1]='\0';
+        board[2][5]='\0';
+        board[6][5]='\0';
         //gerade
-        board[3][3]='K';
-        board[2][3]='P';
-        board[1][3]='P';
-        board[0][3]='P';
-        board[5][3]='p';
-        board[6][3]='P';
-        board[7][3]='P';
-        board[4][2]='P';
-        board[4][1]='P';
-        board[4][0]='P';
-        board[4][4]='P';
-        board[4][5]='P';
-        board[4][6]='P';
-        board[4][7]='P';
+        board[2][3]='\0';
+        board[6][3]='\0';
+        board[4][1]='\0';
+        board[4][5]='\0';
         moves=d2.validMoves(board, 4,3);
-        assertFalse(moves.isEmpty());
         assertEquals(moves.size(),27);
         boardClear();
-        // Dame schwarz am linken Rand
+        // Dame weiß am linken Rand
         //diagonal
-        board[3][1]='K';
-        board[2][2]='P';
-        board[1][3]='P';
-        board[0][4]='P';
-        board[5][1]='P';
-        board[6][2]='P';
-        board[7][3]='P';
+        board[2][2]='\0';
+        board[6][2]='\0';
         //gerade
-        board[3][0]='k';
-        board[2][0]='P';
-        board[1][0]='P';
-        board[0][0]='P';
-        board[5][0]='P';
-        board[6][0]='P';
-        board[7][0]='P';
-        board[4][1]='P';
-        board[4][2]='P';
-        board[4][3]='P';
-        board[4][4]='P';
-        board[4][5]='P';
-        board[4][6]='P';
-        board[4][7]='P';
+        board[2][0]='\0';
+        board[6][0]='\0';
+        board[4][5]='\0';
         moves=d2.validMoves(board, 4, 0);
         assertFalse(moves.isEmpty());
         assertEquals(moves.size(),21);
         boardClear();
-        // Dame schwarz am rechten Rand
+        // Dame weiß am rechten Rand
         //diagonal
-        board[3][6]='P';
-        board[2][5]='P';
-        board[1][4]='P';
-        board[0][3]='P';
-        board[5][6]='P';
-        board[6][5]='P';
-        board[7][4]='P';
+        board[2][5]='\0';
+        board[6][5]='\0';
         //gerade
-        board[3][7]='K';
-        board[2][7]='P';
-        board[1][7]='P';
-        board[0][7]='P';
-        board[5][7]='P';
-        board[6][7]='P';
-        board[7][7]='P';
-        board[4][1]='P';
-        board[4][2]='P';
-        board[4][3]='P';
-        board[4][4]='P';
-        board[4][5]='P';
-        board[4][6]='P';
-        board[4][7]='P';
+        board[2][7]='\0';
+        board[6][7]='\0';
+        board[4][5]='\0';
         moves=d2.validMoves(board, 4, 7);
         assertFalse(moves.isEmpty());
         assertEquals(moves.size(),21);
