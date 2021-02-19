@@ -77,8 +77,7 @@ public class Board{
         	}
     		
         	board=dest;
-        	this.doMoveSpare(dest_x, dest_y, figure);
-    		}
+        	}
     	
     	//figur aus feld
     	else {
@@ -117,12 +116,13 @@ public class Board{
     		if(figure=='p' || figure=='P') {
     			Bauer b = new Bauer(player);
     			val_moves = b.validMoves(board, y, x);
+    			
     		}
     		//züge vergleichen
     		if(!val_moves.contains(move)) throw new Exception("No valid move");
     		else this.doMoveBoard(move, x, y, figure);
     	}
-    	//TODO bauer wird zur dame
+    	
     	
     }
     private void doMoveBoard(String move, int x, int y, char figure) {
@@ -137,6 +137,12 @@ public class Board{
 			if( temp<97) temp += 32;
 			if(temp> 90) temp -= 32;
 			addSpare_part(dest[dest_y][dest_x]); 
+		}
+		if(figure=='P' & dest_y==7) {
+			figure= 'Q';
+		}
+		if(figure== 'p' & dest_y ==0) {
+			figure= 'q';
 		}
 		dest [dest_y][dest_x] = figure;
 		board = dest;
