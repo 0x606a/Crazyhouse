@@ -21,14 +21,15 @@ public class Board{
 // constructor creates 8x8 matrix with Matrix [y][x] and Spare_parts String
 
     public Board(String b){
-        char [][] board= new char[8][8];
+        board= new char[8][8];
         int cnt= b.length();
         
         for (int i=0; i<8;i++) {
         	for(int j=0;j<8;j++) {
-        		board[i][j]='0';
+        		board[i][j]='\0';
         	}
         }
+        
         int i= 0;
         while ( i<8){
         	int j = 0;
@@ -65,7 +66,7 @@ public class Board{
         		Spare_parts += b.charAt(i);
         	}
         }
-        System.out.print(Spare_parts);
+       
 
     }
     //checks if move is valid; if yes: does move, if no: throws runtimeexception
@@ -84,7 +85,7 @@ public class Board{
     		if(player=="w" & ((int) figure)>90) throw new Exception("not your token");
     		int dest_x = (((int) move.charAt(2))-97);
         	int dest_y = (((int) move.charAt(3))-49);
-        	if(dest[dest_y][dest_x]!='0') throw new Exception("invalid move!");
+        	if(dest[dest_y][dest_x]!='\0') throw new Exception("invalid move!");
         	dest = board.clone();
         	dest [dest_y][dest_x] = figure;
         	try {
@@ -98,43 +99,28 @@ public class Board{
     	
     	//figur aus feld
     	if(move.length()==5) {
+    		System.out.println(move.charAt(0));
+    		System.out.println((int)move.charAt(1));
     		int x = ((int) move.charAt(0))-97;
     		int y = 7-(((int) move.charAt(1))-49);
     		System.out.println("x= "+ x +" y= " +y);
     		figure = board[y][x];
-    		if(figure=='0') throw new Exception("no token chosen");
+    		if(figure=='\0') throw new Exception("no token chosen");
     		if(player=="b" & ((int) figure)<97) throw new Exception("not your token");
     		if(player=="w" & ((int) figure)>90) throw new Exception("not your token");
     		
     		
-    		ArrayList<String> val_moves= new ArrayList<>();
+    		ArrayList<String> val_moves;
     		
     		//figur aufrufen(player übergeben als String)
-    		if(figure=='k' || figure=='K') {
-    			Koenig k = new Koenig(player);
-    			val_moves= k.validMoves(board, y, x);
+    		Figur f= switchFigur(figure, player);
+    		val_moves= f.validMoves(board, y, x);
+    		for(int s = val_moves.size(); s>0; s--) {
+    			String temp= move.charAt(0)+move.charAt(1)+'-'+ val_moves.get(s);
+    			val_moves.set(s, temp);
     		}
-    		if(figure=='q' || figure=='Q') {
-    			Dame d = new Dame(player);
-    			val_moves= d.validMoves(board, y, x);
-    		}
-    		
-    		if(figure=='B' || figure=='b') {
-    			Laeufer l= new Laeufer(player);
-    			val_moves = l.validMoves(board, y, x);
-    		}
-    		if(figure=='n' || figure=='N') {
-    			Pferd p = new Pferd(player);
-    			val_moves = p.validMoves(board, y, x);
-    		}
-    		if(figure=='r' || figure=='R') {
-    			Turm t = new Turm(player);
-    			val_moves = t.validMoves(board, y, x);
-    		}
-    		if(figure=='p' || figure=='P') {
-    			Bauer b = new Bauer(player);
-    			val_moves = b.validMoves(board, y, x);
-    			
+    		for(String s: val_moves) {
+    			System.out.println(s);
     		}
     		//züge vergleichen
     		if(!val_moves.contains(move)) throw new Exception("No valid move");
@@ -151,7 +137,7 @@ public class Board{
 		int dest_x = (((int) move.charAt(3))-97);
 		int dest_y = (((int) move.charAt(4))-49);
 		//ggf geschlagene figur zu spareparts hinzufügen
-		if(dest[dest_y][dest_x]!='0') {
+		if(dest[dest_y][dest_x]!='\0') {
 			char temp =dest[dest_y][dest_x];
 			if( temp<97) temp += 32;
 			if(temp> 90) temp -= 32;
@@ -198,29 +184,123 @@ public class Board{
    //gibt objekt board als string zurück
     public String BoardToString() {
     	String b_String="";
-    	int cnt=0;
-    	char tmp=9;
+    	
+    	char tmp;
     	for(int y=0; y<8; y++) {
+    		int cnt=0;
     		for(int x=0; x<8; x++) {
     			tmp = board[y][x];
-       			if(tmp=='0') cnt++;
-    			if(tmp!='0' &cnt==0)b_String+=tmp;
-    			if(tmp!='0' &cnt>0) {
+       			if(tmp=='\0') cnt++;
+    			if(tmp!='\0' &cnt==0)b_String+=tmp;
+    			if(tmp!='\0' &cnt>0) {
     				b_String += Character.forDigit(cnt,10);
     				b_String += tmp;
     				cnt=0;
     			}
-        		if(x==7 & tmp=='0') b_String += Character.forDigit(cnt,10);
+        		if(x==7 & tmp=='\0') b_String += Character.forDigit(cnt,10);
         	}
     		b_String+='/';
     	}
-    	b_String += Spare_parts;
-    	return b_String;	
+    	String temp = b_String.concat(Spare_parts);
+    	return temp;	
     }
-    
+    public Figur switchFigur(char figure, String player) {
+    	if(figure=='k' || figure=='K') {
+			return new Koenig(player);
+			
+		}
+		if(figure=='q' || figure=='Q') {
+			return new Dame(player);
+			
+		}
+		
+		if(figure=='B' || figure=='b') {
+			return new Laeufer(player);
+		}
+		if(figure=='n' || figure=='N') {
+			return new Pferd(player);
+		}
+		if(figure=='r' || figure=='R') {
+			return new Turm(player);
+		}
+		else {
+			return new Bauer(player);
+		}
+    }
     //getters
-    public char[][] getBoard(){return board;}
+    public char[][] getBoard(){return this.board;}
     public String getSpare_parts() {
         return Spare_parts;
     }
+    private int[] dest_coord(String co) {
+    	int [] c= new int[2];
+    	c[0] = ((int) co.charAt(0))-97;
+		c[1] = 7-(((int) co.charAt(1))-49);
+		return c;
+    }
+    private String xytoString(int x, int y) {
+    	String pos =new String("");
+    	pos+= (char) x+97;
+    	pos+= (char) y+42;
+    	return pos;
+    }
+    public boolean isCheck(String player) {
+    	ArrayList<String> poss_Moves=new ArrayList<>();
+    	Koenig k;
+    	ArrayList<String> k_Moves = new ArrayList<>();
+    	int x=0;
+		int y=0;
+    	if(player=="w") {
+    		
+    		for(int i=0; i<8; i++) {
+    			for (int j=0; j<8; j++) {
+    				if(board[i][j]=='K') {
+    					x=i;
+    					y=j;
+    					k= new Koenig(player);
+    					k_Moves = k.validMoves(board, y, x);
+    				}
+    			}
+    		}
+    	}
+    	else {
+    		for(int i=0; i<8; i++) {
+    			for (int j=0; j<8; j++) {
+    				if(board[i][j]=='k') {
+    					x=i;
+    					y=j;
+    					k= new Koenig(player);
+    					k_Moves = k.validMoves(board, y, x);
+    				}
+    			}
+    		}
+    	}
+    	for(int pos_y=0; pos_y<7; pos_y++) {
+    		for(int pos_x=0; pos_x<7;pos_x++) {
+    			char figure= board[pos_y][pos_x];
+    			if(player=="w" & ((int)figure)>96) {
+    				Figur cur= switchFigur(figure, player);
+    				poss_Moves.addAll(cur.validMoves(board, pos_y, pos_x));
+    			}
+    			if(player=="p" & ((int)figure)<90 &((int)figure)>10) {
+    				Figur cur= switchFigur(figure, player);
+    				poss_Moves.addAll(cur.validMoves(board, pos_y, pos_x));
+    			}
+    		}
+    	}
+    	if(poss_Moves.contains(xytoString(x,y))) {
+    		//nicht ideal, schach muss auch unabhängig von schachmatt prüfbar sein 
+    		if(isCheckMate(k_Moves, poss_Moves));//spiel vorbei!!!
+    		return true;
+    	}
+    	return false;
+    	
+    }
+    public boolean isCheckMate(ArrayList<String> k_Moves, ArrayList<String> poss_Moves) {
+    	for(String m:k_Moves) {
+			if(poss_Moves.contains(m)) return true;
+			
+		}return false;
+    }
 }
+
