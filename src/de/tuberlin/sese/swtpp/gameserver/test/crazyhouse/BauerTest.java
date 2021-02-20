@@ -3,10 +3,7 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
-import org.hamcrest.Matcher;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import de.tuberlin.sese.swtpp.gameserver.model.crazyhouse.*;
 public class BauerTest {
@@ -24,33 +21,26 @@ public class BauerTest {
 		assertTrue(bauer1.getPlayer()=="w");
 		assertTrue(bauer2.getPlayer()=="b");
 	}
-
-	@Test(expected = java.lang.Exception.class)
-	public void testwrongPositionWhite() throws Exception 
-	{
-		bauer1.validMoves(board, 8,8);
-		
-	}
 	
 	@Test 
 	public void testValidMoves() throws Exception
 	{
-		//test Exception wenn ¸bergebene Position nicht auf dem Feld liegt
+		//test Exception wenn √ºbergebene Position nicht auf dem Feld liegt
 		
-		// bauer weiﬂ im Spielfeld
+		// bauer wei√ü im Spielfeld
 		board[3][2]='k';
 		board[3][4]='q';
 		moves=bauer1.validMoves(board, 4,3);
 		assertFalse(moves.isEmpty());
 		assertEquals(moves.size(),3);  
 		boardClear();
-		// bauer weiﬂ am linken Rand
+		// bauer wei√ü am linken Rand
 		board[3][1]='k';
 		moves=bauer1.validMoves(board, 4, 0);
 		assertFalse(moves.isEmpty());
 		assertEquals(moves.size(),2);  
 		boardClear();
-		// bauer weiﬂ am rechten Rand
+		// bauer wei√ü am rechten Rand
 		board[3][6]='k';
 		moves=bauer1.validMoves(board, 4, 7);
 		assertFalse(moves.isEmpty());
