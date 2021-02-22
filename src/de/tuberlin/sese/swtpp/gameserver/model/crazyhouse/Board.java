@@ -151,10 +151,10 @@ public class Board implements Serializable{
 			else { temp -= 32;}
 			addSpare_part(temp); 
 		}
-		if(figure=='P' & dest_y==7) {
+		if(figure=='P' & dest_y==0) {
 			figure= 'Q';
 		}
-		if(figure== 'p' & dest_y ==0) {
+		if(figure== 'p' & dest_y ==7) {
 			figure= 'q';
 		}
 		dest [dest_y][dest_x] = figure;
@@ -249,16 +249,17 @@ public class Board implements Serializable{
     }
     private int[] dest_coord(String co) throws Exception{
     	if(((int)co.charAt(0) < 97)||((int)co.charAt(0)) > 104 ) throw new Exception("invalid String");
-    	if(((int)co.charAt(1) < 49)||((int)co.charAt(0)) > 56 ) throw new Exception("invalid String");
+    	if(((int)co.charAt(1) < 49)||((int)co.charAt(1)) > 56 ) throw new Exception("invalid String");
     	int [] c= new int[2];
     	c[0] = ((int) co.charAt(0))-97;
 		c[1] = 7-(((int) co.charAt(1))-49);
 		return c;
     }
-    private String xytoString(int x, int y) {
+    public String xytoString(int x, int y) {
     	String pos =new String("");
-    	pos+= (char) x+97;
-    	pos+= (char) y+42;
+    	//char tmp;
+    	pos+= ((char) (x+97));
+    	pos+= ((char) (56-y));
     	return pos;
     }
     public boolean Check(String player, boolean checkmate) throws Exception{
@@ -271,8 +272,8 @@ public class Board implements Serializable{
     	for(int i=0; i<8; i++) {
 			for (int j=0; j<8; j++) {
 				if((board[i][j]=='K' & player=="w") || (board[i][j]=='k' & player =="b")) {
-					x=i;
-					y=j;			
+					x=j;
+					y=i;			
 				}
 			}
 		}
@@ -295,14 +296,19 @@ public class Board implements Serializable{
     	for(int pos_y=0; pos_y<7; pos_y++) {
     		for(int pos_x=0; pos_x<7;pos_x++) {
     			char figure= board[pos_y][pos_x];
-    			if((player=="w" & ((int)figure)>96) || player=="p" & ((int)figure)<90 &((int)figure)>10) {
+    			if((player=="w" & ((int)figure)>96) || player=="b" & ((int)figure)<90 &((int)figure)>10) {
     				Figur cur= switchFigur(figure, player);
+    				for(String p:cur.validMoves(board, pos_y, pos_x)) {
+    		    		System.out.println(cur.getClass() +" "+p);
+    		    	}
     				poss_Moves.addAll(cur.validMoves(board, pos_y, pos_x));
     			}
     		}
     	}
+    	System.out.println(xytoString(x,y));
+    	
     	if(poss_Moves.contains(xytoString(x,y))) {
-    		if(checkmate) return isCheckMate(k_Moves, poss_Moves);
+    	  	if(checkmate) return isCheckMate(k_Moves, poss_Moves);
     		return true;
     	}
     	return false;
@@ -320,3 +326,4 @@ public class Board implements Serializable{
    
         
 }
+
