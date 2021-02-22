@@ -62,7 +62,7 @@ public class Board implements Serializable{
             }
         }
         
-        Spare_parts = new String("");
+        Spare_parts = new String("\0");
         if(b.length()-cnt <b.length()) {
         	for(i=b.length()-cnt; i< b.length(); i++){
         		Spare_parts += b.charAt(i);
