@@ -86,7 +86,7 @@ public class Board implements Serializable{
     		if(player=="b" & ((int) figure)<97) {System.out.println("Nicht deine Figur!"); return false;}
     		if(player=="w" & ((int) figure)>90) {System.out.println("Nicht deine Figur!"); return false;}
     		int dest_x = (((int) move.charAt(2))-97);
-        	int dest_y = (((int) move.charAt(3))-48);
+        	int dest_y = 7-(((int) move.charAt(3))-49);
         	if(dest[dest_y][dest_x]!='\0') { System.out.println("auf dem ausgewählten Feld steht bereits eine Figur!");return false;}
         	dest = board.clone();
         	dest [dest_y][dest_x] = figure;
@@ -173,9 +173,12 @@ public class Board implements Serializable{
     	if(i==Spare_parts.length()) {
     		throw new Exception("Unvalid move!");
     	}
-    	String temp = Spare_parts.substring(0, i);
-    	if(i<Spare_parts.length()-1) temp += Spare_parts.substring(i+1);
-    	this.Spare_parts=temp;
+    	else
+    	{
+	    	String temp = Spare_parts.substring(0, i);
+	    	if(i<Spare_parts.length()-1) temp += Spare_parts.substring(i+1);
+	    	this.Spare_parts=temp;
+    	}	
     }
     
     //fÃ¼gt figur zu spare parts hinzu 
