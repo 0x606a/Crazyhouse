@@ -33,7 +33,7 @@ public class CrazyhouseGame extends Game implements Serializable{
 		super();
 		
 		//board="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/";
-		board="rn2kbnr/4ppBp/b1pp4/qP6/Q7/P7/P2PPPPP/RN2KBNR/ppp";	//bauer schlagen
+		board="rnbqkbnr/p2ppppp/1p6/2P5/8/1P6/P1P1PPPP/RNBQKBNR/P";	//bauer schlagen
 		
 		// TODO: initialize internal model if necessary 
 	}
@@ -224,40 +224,51 @@ public class CrazyhouseGame extends Game implements Serializable{
 		Board newBoard=new Board(board);
 		// übergibt newBoard objekt den String. bekommt als Antwort 
 		Move move = new Move(moveString,newBoard.BoardToString(),player); // erzeuge aus dem String einen Move
+		String farbe=this.nextPlayerString();
+		
+		
 		boolean validMove = false;
-		if(player==whitePlayer)
-		{
-			try {
-				validMove=newBoard.checkMove(moveString, "w");	
-				this.nextPlayer=blackPlayer;// checke den Move auf gültigkeit
-			} catch (Exception e) {
-				
-				e.printStackTrace();
+			if(farbe=="w")
+			{
+				try {
+						validMove=newBoard.checkMove(moveString, farbe);	
+						this.nextPlayer=blackPlayer;// checke den Move auf gültigkeit
+						
+					} catch (Exception e) {
+						
+						e.printStackTrace();
+					}
 			}
-		}
-		else
-		{
-			try {
-				validMove=newBoard.checkMove(moveString, "b");
-				this.nextPlayer=whitePlayer;
-			} catch (Exception e) {
-				
-				e.printStackTrace();
+			else
+			{
+				try {
+					validMove=newBoard.checkMove(moveString, farbe);
+					this.nextPlayer=whitePlayer;
+				} catch (Exception e)
+				{
+					e.printStackTrace();
+				}
 			}
-		}
+				
 		if(validMove)												// wenn Move gültig
 		{
 			this.history.add(move);									// füge den Move zur History hinzu
 			this.setNextPlayer(nextPlayer);
+			this.board=newBoard.BoardToString();
+			return validMove;
+			
 		}
-		this.board=newBoard.BoardToString();
-		System.out.println(this.getBoard());
-		return validMove;
-		
-		
+		else
+		{
+			this.board=newBoard.BoardToString();
+			System.out.println(this.getBoard());
+			this.setNextPlayer(player);
+			return validMove;
+		}
+	}
 	
 		// replace with real implementation
 		
-	}
+	
 
 }
