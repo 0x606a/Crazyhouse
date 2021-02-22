@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import de.tuberlin.sese.swtpp.gameserver.model.crazyhouse.Pferd;
+import de.tuberlin.sese.swtpp.gameserver.model.crazyhouse.Springer;
 import de.tuberlin.sese.swtpp.gameserver.model.crazyhouse.Bauer;
 import de.tuberlin.sese.swtpp.gameserver.model.crazyhouse.Dame;
 import de.tuberlin.sese.swtpp.gameserver.model.crazyhouse.Koenig;
@@ -62,7 +62,7 @@ public class Board implements Serializable{
             }
         }
         
-        Spare_parts = new String("\0");
+        Spare_parts = new String("");
         if(b.length()-cnt <b.length()) {
         	for(i=b.length()-cnt; i< b.length(); i++){
         		Spare_parts += b.charAt(i);
@@ -159,7 +159,7 @@ public class Board implements Serializable{
 			figure= 'q';
 		}
 		dest [dest_y][dest_x] = figure;
-		board = dest;
+		this.board = dest;
 		
     }
     
@@ -181,16 +181,29 @@ public class Board implements Serializable{
     //fÃ¼gt figur zu spare parts hinzu
     private void addSpare_part(char f) {
     	int val = (int) f;
-    	int s = (int) Spare_parts.charAt(0);
-    	int i = 0;
-    	while(val<s) {
-    		i++;
-    		s= (int) Spare_parts.charAt(i);
+    	if(Character.isUpperCase(f)) 
+    	{
+    		f=Character.toLowerCase(f);		// Füge je nach Groß oder Klein Buchstabe an den Anfang oder ans Ende des Strings ein
+    		//Spare_parts=Spare_parts+f;
     	}
-    	String temp = Spare_parts.substring(0,i) + f + Spare_parts.substring(i);
-    	Spare_parts = temp;
-    	
-    }
+    	else 
+    	{
+    		f=Character.toUpperCase(f);
+    		//Spare_parts=f+Spare_parts;
+    	} 
+    	if(Spare_parts.isEmpty()) { Spare_parts=""+f;}
+    	else {
+	    	int s = (int) Spare_parts.charAt(0);
+	    	int i = 0;
+	    	while(val>s && i<Spare_parts.length()) {
+	    		s= (int) Spare_parts.charAt(i);
+	    		i++;
+	    	}
+	    	String temp = Spare_parts.substring(0,i) + f + Spare_parts.substring(i);
+	    	Spare_parts = temp;
+    	}
+    	}
+    
    //gibt objekt board als string zurÃ¼ck
     public String BoardToString() {
     	String b_String="";
@@ -228,7 +241,7 @@ public class Board implements Serializable{
 			return new Laeufer(player);
 		}
 		if(figure=='n' || figure=='N') {
-			return new Pferd(player);
+			return new Springer(player);
 		}
 		if(figure=='r' || figure=='R') {
 			return new Turm(player);
@@ -312,5 +325,8 @@ public class Board implements Serializable{
 			
 		}return false;
     }
+   
+        
 }
+
 

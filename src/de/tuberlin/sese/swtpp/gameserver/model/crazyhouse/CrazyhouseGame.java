@@ -33,7 +33,7 @@ public class CrazyhouseGame extends Game implements Serializable{
 		super();
 		
 		//board="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/";
-		board="rnbqkbnr/1ppppppp/8/8/8/p7/PPPPPPPP/RNBQKBNR/";	//bauer schlagen
+		board="rn2kbnr/4ppBp/b1pp4/qP6/Q7/P7/P2PPPPP/RN2KBNR/ppp";	//bauer schlagen
 		
 		// TODO: initialize internal model if necessary 
 	}
@@ -250,7 +250,7 @@ public class CrazyhouseGame extends Game implements Serializable{
 			this.history.add(move);									// füge den Move zur History hinzu
 			this.setNextPlayer(nextPlayer);
 		}
-		board=newBoard.BoardToString();
+		this.board=newBoard.BoardToString();
 		System.out.println(this.getBoard());
 		return validMove;
 		
