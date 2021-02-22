@@ -10,7 +10,7 @@ public class Koenig extends Figur
 		super(player);
 		this.validmove = new ArrayList<String>();
 	}
-
+	public ArrayList<String> getValidmove(){return validmove;}
 	@Override
 	public ArrayList<String> validMoves(char[][] board, int x, int y) throws Exception 
 	{

@@ -14,11 +14,13 @@ import de.tuberlin.sese.swtpp.gameserver.model.crazyhouse.Koenig;
 import de.tuberlin.sese.swtpp.gameserver.model.crazyhouse.Laeufer;
 import de.tuberlin.sese.swtpp.gameserver.model.crazyhouse.Turm;
 
-public class Board{
-    private char [][] board;
+public class Board implements Serializable{
+    
+	private static final long serialVersionUID = -7251893373315958898L;
+	private char [][] board;
     private String Spare_parts;
 
-// constructor creates 8x8 matrix with Matrix [y][x] and Spare_parts String
+// constructor creates 8x8 matrix with Matrix [y][x] and Spare_parts String 
 
     public Board(String b){
         board= new char[8][8];
@@ -70,7 +72,7 @@ public class Board{
 
     }
     //checks if move is valid; if yes: does move, if no: throws runtimeexception
-    public void checkMove(String move, String player) throws Exception {
+    public boolean checkMove(String move, String player) throws Exception {
     	char figure='0';
     	char [][] dest = new char[8][8];
     	for(int i= 0; i<8; i++) {
@@ -81,11 +83,11 @@ public class Board{
     	
     	if(move.length()==4) {
     		figure= move.charAt(0);
-    		if(player=="b" & ((int) figure)<97) throw new Exception("not your token");
-    		if(player=="w" & ((int) figure)>90) throw new Exception("not your token");
+    		if(player=="b" & ((int) figure)<97) {System.out.println("Nicht deine Figur!"); return false;}
+    		if(player=="w" & ((int) figure)>90) {System.out.println("Nicht deine Figur!"); return false;}
     		int dest_x = (((int) move.charAt(2))-97);
-        	int dest_y = (((int) move.charAt(3))-49);
-        	if(dest[dest_y][dest_x]!='\0') throw new Exception("invalid move!");
+        	int dest_y = (((int) move.charAt(3))-48);
+        	if(dest[dest_y][dest_x]!='\0') { System.out.println("auf dem ausgew�hlten Feld steht bereits eine Figur!");return false;}
         	dest = board.clone();
         	dest [dest_y][dest_x] = figure;
         	try {
@@ -115,27 +117,34 @@ public class Board{
     		//figur aufrufen(player übergeben als String)
     		Figur f= switchFigur(figure, player);
     		val_moves= f.validMoves(board, y, x);
-    		for(int s = val_moves.size(); s>0; s--) {
-    			String temp= move.charAt(0)+move.charAt(1)+'-'+ val_moves.get(s);
+    		for(int s = 0;s<val_moves.size(); s++) {
+    			String temp=""+ move.charAt(0)+move.charAt(1)+'-'+ val_moves.get(s);
     			val_moves.set(s, temp);
     		}
     		for(String s: val_moves) {
     			System.out.println(s);
     		}
     		//züge vergleichen
-    		if(!val_moves.contains(move)) throw new Exception("No valid move");
-    		else this.doMoveBoard(move, x, y, figure);
+    		if(!val_moves.contains(move)) return false;
+    		else { 
+    				this.doMoveBoard(move, x, y, figure);
+    				return true;
+    			}
+    		
     	}
-    	else {throw new Exception("invalid move string length");}
+    	else {return false; }
     	
     	
     }
     private void doMoveBoard(String move, int x, int y, char figure) {
     	//figur ziehen
-    	char [][] dest = board.clone();
-		dest[y][x]=0;
+    	char [][] dest = new char[8][8];
+    	for(int i= 0; i<8; i++) {
+    		dest[i] = this.getBoard()[i].clone();
+    	}
+		dest[y][x]='\0';
 		int dest_x = (((int) move.charAt(3))-97);
-		int dest_y = (((int) move.charAt(4))-49);
+		int dest_y = Math.abs((((int) move.charAt(4))-48)-8);
 		//ggf geschlagene figur zu spareparts hinzufügen
 		if(dest[dest_y][dest_x]!='\0') {
 			char temp =dest[dest_y][dest_x];
@@ -151,6 +160,7 @@ public class Board{
 		}
 		dest [dest_y][dest_x] = figure;
 		board = dest;
+		
     }
     
     //figur aus spare parts nehmen
@@ -244,7 +254,7 @@ public class Board{
     	pos+= (char) y+42;
     	return pos;
     }
-    public boolean isCheck(String player) {
+    public boolean isCheck(String player) throws Exception {
     	ArrayList<String> poss_Moves=new ArrayList<>();
     	Koenig k;
     	ArrayList<String> k_Moves = new ArrayList<>();

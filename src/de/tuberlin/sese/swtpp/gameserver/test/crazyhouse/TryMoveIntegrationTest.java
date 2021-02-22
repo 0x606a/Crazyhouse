@@ -14,7 +14,7 @@ public class TryMoveIntegrationTest {
 
 	User user1 = new User("Alice", "alice");
 	User user2 = new User("Bob", "bob");
-	
+	 
 	Player whitePlayer = null;
 	Player blackPlayer = null;
 	Game game = null;
@@ -73,7 +73,7 @@ public class TryMoveIntegrationTest {
 	@Test
 	public void exampleTest() {
 		startGame("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/",true);
-		assertMove("b2-b7",true,false);
+		assertMove("b2-b5",true,true);
 		assertGameState("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/",true,false,false);
 	}
 

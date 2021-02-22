@@ -3,6 +3,7 @@ package de.tuberlin.sese.swtpp.gameserver.model.crazyhouse;
 import java.io.Serializable;
 
 import de.tuberlin.sese.swtpp.gameserver.model.Game;
+import de.tuberlin.sese.swtpp.gameserver.model.Move;
 import de.tuberlin.sese.swtpp.gameserver.model.Player;
 
 public class CrazyhouseGame extends Game implements Serializable{
@@ -11,7 +12,7 @@ public class CrazyhouseGame extends Game implements Serializable{
 	 *
 	 */
 	private static final long serialVersionUID = 5424778147226994452L;
-
+	
 	/************************
 	 * member
 	 ***********************/
@@ -19,17 +20,19 @@ public class CrazyhouseGame extends Game implements Serializable{
 	// just for better comprehensibility of the code: assign white and black player
 	private Player blackPlayer;
 	private Player whitePlayer;
-
+	
 	// internal representation of the game state
-	private String board = "////////";
-
+	private String board = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/";
+	private Board newBoard;
+	
 	/************************
 	 * constructors
 	 ***********************/
 
 	public CrazyhouseGame() {
 		super();
-
+		newBoard= new Board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/");
+		
 		// TODO: initialize internal model if necessary 
 	}
 
@@ -204,20 +207,53 @@ public class CrazyhouseGame extends Game implements Serializable{
 	public void setBoard(String state) {
 		// Note: This method is for automatic testing. A regular game would not start at some artificial state.
 		//       It can be assumed that the state supplied is a regular board that can be reached during a game.
-		board = state;
+		//newBoard=new Board(state);
 	}
 
 	@Override
 	public String getBoard() {
-		return board;
+		//return newBoard.BoardToString();
+		return newBoard.BoardToString();
 	}
 
 	@Override
-	public boolean tryMove(String moveString, Player player) {
-		// TODO: implement
+	public boolean tryMove(String moveString, Player player){
 		
+		// übergibt newBoard objekt den String. bekommt als Antwort 
+		Move move = new Move(moveString,newBoard.BoardToString(),player); // erzeuge aus dem String einen Move
+		boolean validMove = false;
+		if(player==whitePlayer)
+		{
+			try {
+				validMove=newBoard.checkMove(moveString, "w");	
+				this.nextPlayer=blackPlayer;// checke den Move auf gültigkeit
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+			}
+		}
+		else
+		{
+			try {
+				validMove=newBoard.checkMove(moveString, "b");
+				this.nextPlayer=whitePlayer;
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+			}
+		}
+		if(validMove)												// wenn Move gültig
+		{
+			this.history.add(move);									// füge den Move zur History hinzu
+		}
+		board=newBoard.BoardToString();
+		this.setNextPlayer(nextPlayer);
+		return validMove;
+		
+		
+	
 		// replace with real implementation
-		return false;
+		
 	}
 
 }

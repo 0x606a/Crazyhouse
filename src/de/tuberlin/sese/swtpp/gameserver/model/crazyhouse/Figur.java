@@ -6,17 +6,16 @@ import java.util.List;
 public abstract class Figur
 {
 
-	private ArrayList<String> validmove;			// Array List die die möglichen Züge zurück gibt
+				// Array List die die möglichen Züge zurück gibt
 	private String player;// Farbe des Spielers
 	
     public Figur (String player)
     {
-    	this.validmove = new ArrayList<String>();
        this.player=player;
     }
 
     public String getPlayer() {return player;}
-    public ArrayList<String> getValidmove(){return validmove;}
+  //  public ArrayList<String> getValidmove(){return validmove;}
     
     public abstract ArrayList<String> validMoves(char[][] board, int x, int y)throws Exception; // kriegt beim Aufruf auf dem Feld die Startposition
     public String generateString(int x, int y)
@@ -52,8 +51,8 @@ public abstract class Figur
                 System.out.print("keine gueltige Position!");
                 break;
         }
-    	
-    	String zugString= ""+zeile+x;
+    	//String zugString= ""+zeile+x;
+    	String zugString= ""+zeile+Math.abs(x-8);
     	return zugString;
     }
  
