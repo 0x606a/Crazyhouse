@@ -10,10 +10,11 @@ public class Bauer extends Figur
         super(player);
         this.validmove = new ArrayList<String>();
     }
+    public ArrayList<String> getValidmove(){return validmove;}
     //gebe Anhand der Position auf dem Spielfeld eine Liste mit den möglichen züge zurück
     
     @Override
-    public ArrayList<String> validMoves(char[][]board, int x, int y) throws Exception
+     public ArrayList<String> validMoves(char[][]board, int x, int y) throws Exception
     {
     	this.validmove.clear(); // leere die alte Liste
         	
@@ -32,7 +33,7 @@ public class Bauer extends Figur
 		        	String move=this.generateString(x-1, y-1);
 		        	this.validmove.add(move);
 		        }
-		        		
+		        		 
 		        if(board[x-1][y]=='\0') 
 		        {
 		        	String move = this.generateString(x-1, y);
