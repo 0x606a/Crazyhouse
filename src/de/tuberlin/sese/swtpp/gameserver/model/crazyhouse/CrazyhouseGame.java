@@ -22,16 +22,18 @@ public class CrazyhouseGame extends Game implements Serializable{
 	private Player whitePlayer;
 	
 	// internal representation of the game state
-	private String board = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/";
-	private Board newBoard;
-	
+	//private String board = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/";
+	private String board = "////////";
+		
 	/************************
 	 * constructors
 	 ***********************/
 
 	public CrazyhouseGame() {
 		super();
-		newBoard= new Board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/");
+		
+		//board="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/";
+		board="rnbqkbnr/1ppppppp/8/8/8/p7/PPPPPPPP/RNBQKBNR/";	//bauer schlagen
 		
 		// TODO: initialize internal model if necessary 
 	}
@@ -207,18 +209,19 @@ public class CrazyhouseGame extends Game implements Serializable{
 	public void setBoard(String state) {
 		// Note: This method is for automatic testing. A regular game would not start at some artificial state.
 		//       It can be assumed that the state supplied is a regular board that can be reached during a game.
-		//newBoard=new Board(state);
+		board=state;
 	}
 
 	@Override
 	public String getBoard() {
-		//return newBoard.BoardToString();
-		return newBoard.BoardToString();
+		
+		return board;
 	}
 
 	@Override
 	public boolean tryMove(String moveString, Player player){
 		
+		Board newBoard=new Board(board);
 		// übergibt newBoard objekt den String. bekommt als Antwort 
 		Move move = new Move(moveString,newBoard.BoardToString(),player); // erzeuge aus dem String einen Move
 		boolean validMove = false;
@@ -245,9 +248,10 @@ public class CrazyhouseGame extends Game implements Serializable{
 		if(validMove)												// wenn Move gültig
 		{
 			this.history.add(move);									// füge den Move zur History hinzu
+			this.setNextPlayer(nextPlayer);
 		}
 		board=newBoard.BoardToString();
-		this.setNextPlayer(nextPlayer);
+		System.out.println(this.getBoard());
 		return validMove;
 		
 		
