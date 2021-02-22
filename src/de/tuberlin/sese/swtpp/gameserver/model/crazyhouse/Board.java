@@ -178,7 +178,7 @@ public class Board implements Serializable{
     	this.Spare_parts=temp;
     }
     
-    //fügt figur zu spare parts hinzu
+    //fügt figur zu spare parts hinzu 
     private void addSpare_part(char f) {
     	int val = (int) f;
     	if(Character.isUpperCase(f)) 
