@@ -148,9 +148,9 @@ public class Board implements Serializable{
 		//ggf geschlagene figur zu spareparts hinzufÃ¼gen
 		if(dest[dest_y][dest_x]!='\0') {
 			char temp =dest[dest_y][dest_x];
-			if( temp<97) temp += 32;
-			if(temp> 90) temp -= 32;
-			addSpare_part(dest[dest_y][dest_x]); 
+			if( temp<97) { temp += 32;}
+			else { temp -= 32;}
+			addSpare_part(temp); 
 		}
 		if(figure=='P' & dest_y==7) {
 			figure= 'Q';
@@ -179,20 +179,12 @@ public class Board implements Serializable{
     }
     
     //fÃ¼gt figur zu spare parts hinzu 
-    private void addSpare_part(char f) {
-    	int val = (int) f;
-    	if(Character.isUpperCase(f)) 
-    	{
-    		f=Character.toLowerCase(f);		// Füge je nach Groß oder Klein Buchstabe an den Anfang oder ans Ende des Strings ein
-    		//Spare_parts=Spare_parts+f;
-    	}
+    private void addSpare_part(char f) 
+    {
+    	if(Spare_parts.isEmpty()) { Spare_parts=""+f;}
     	else 
     	{
-    		f=Character.toUpperCase(f);
-    		//Spare_parts=f+Spare_parts;
-    	} 
-    	if(Spare_parts.isEmpty()) { Spare_parts=""+f;}
-    	else {
+    		int val = (int) f;
 	    	int s = (int) Spare_parts.charAt(0);
 	    	int i = 0;
 	    	while(val>s && i<Spare_parts.length()) {
@@ -202,7 +194,7 @@ public class Board implements Serializable{
 	    	String temp = Spare_parts.substring(0,i) + f + Spare_parts.substring(i);
 	    	Spare_parts = temp;
     	}
-    	}
+    }
     
    //gibt objekt board als string zurÃ¼ck
     public String BoardToString() {
