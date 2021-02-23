@@ -4,18 +4,25 @@ package de.tuberlin.sese.swtpp.gameserver.model.crazyhouse;
 import java.util.*;
 public class Bauer extends Figur
 {
+	private boolean f =false;
 	private ArrayList<String> validmove;
     public Bauer(String player )
     {
         super(player);
         this.validmove = new ArrayList<String>();
     }
+
+    Bauer(String player, boolean f){
+    	super(player);
+    	this.f=f;
+    }
     public ArrayList<String> getValidmove(){return validmove;}
     //gebe Anhand der Position auf dem Spielfeld eine Liste mit den möglichen züge zurück
     
     @Override
-     public ArrayList<String> validMoves(char[][]board, int x, int y) throws Exception
+     public ArrayList<String> validMoves(Board b, int x, int y)
     {
+    	char[][] board=b.getBoard().clone();
     	this.validmove.clear(); // leere die alte Liste
         	
     	if ( this.getPlayer()=="w") // white player
@@ -122,6 +129,6 @@ public class Bauer extends Figur
            		}
            	} 
         }
-		return validmove;
+    	return validmove;
     }
 }
