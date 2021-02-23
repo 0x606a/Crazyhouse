@@ -91,6 +91,9 @@ public class Board implements Serializable{
     		int dest_y = co[1];
         	if(dest[dest_y][dest_x]!='\0') { System.out.println("auf dem ausgewählten Feld steht bereits eine Figur!");return false;}
         	dest = board.clone();
+        	if(figure=='P')figure='F';
+    		if(figure=='p')figure='f';
+    		
         	dest [dest_y][dest_x] = figure;
         	try {
         		takeSpare_part(figure);
@@ -116,6 +119,7 @@ public class Board implements Serializable{
     		//figur aufrufen(player Ã¼bergeben als String)
     		Figur f= switchFigur(figure, player);
     		val_moves= f.validMoves(this, y, x);
+            val_moves=f.filterMoves(this, val_moves, y, x);
     		for(int s = 0;s<val_moves.size(); s++) {
     			String temp=""+ move.charAt(0)+move.charAt(1)+'-'+ val_moves.get(s);
     			val_moves.set(s, temp);
@@ -137,11 +141,8 @@ public class Board implements Serializable{
     }
     public void doMoveBoard(String move, int x, int y, char figure) {
     	//figur ziehen
-    	char [][] dest = new char[8][8];
-    	for(int i= 0; i<8; i++) {
-    		dest[i] = this.getBoard()[i].clone();
-    	}
-		dest[y][x]='\0';
+    	char [][] dest = board.clone();
+    	dest[y][x]='\0';
 		int dest_x = (((int) move.charAt(3))-97);
 		int dest_y = Math.abs((((int) move.charAt(4))-48)-8);
 		//ggf geschlagene figur zu spareparts hinzufÃ¼gen
@@ -151,10 +152,13 @@ public class Board implements Serializable{
 			else { temp -= 32;}
 			addSpare_part(temp); 
 		}
-		if(figure=='P' & dest_y==0) {
+		if(figure=='F')figure='P';
+		if(figure=='f')figure='p';
+		
+		if((figure=='P') & dest_y==0) {
 			figure= 'Q';
 		}
-		if(figure== 'p' & dest_y ==7) {
+		if((figure== 'p') & dest_y ==7) {
 			figure= 'q';
 		}
 		dest [dest_y][dest_x] = figure;
@@ -180,7 +184,7 @@ public class Board implements Serializable{
     
     //fÃ¼gt figur zu spare parts hinzu 
     private void addSpare_part(char f) 
-    {
+    {	
     	if(Spare_parts.isEmpty()) { 
     		Spare_parts=""+f;}
     	else 
@@ -199,6 +203,7 @@ public class Board implements Serializable{
     
    //gibt objekt board als string zurÃ¼ck
     public String BoardToString() {
+    	////////////////////////////////////////////////f to p
     	String b_String="";
     	
     	char tmp;
@@ -218,9 +223,14 @@ public class Board implements Serializable{
     		b_String+='/';
     	}
     	String temp = b_String.concat(Spare_parts);
+    	temp= temp.replace('F', 'P');
+    	temp= temp.replace('f', 'p');
     	return temp;	
     }
     public Figur switchFigur(char figure, String player) {
+    	if(figure == 'f' || figure== 'F') {
+    		return new Bauer(player, true);
+    	}
     	if(figure=='k' || figure=='K') {
 			return new Koenig(player);
 			
@@ -282,6 +292,7 @@ public class Board implements Serializable{
 				}
 			}
 		}
+    	
     	k_Moves = k.validMoves(this, y, x);
     	String co = xytoString(x,y);
     	try {
@@ -294,22 +305,24 @@ public class Board implements Serializable{
     private boolean isCheck(ArrayList<String> poss_Moves, ArrayList<String> k_Moves, String player, String co, boolean checkmate)throws Exception {
     	int [] coordinates;
     	try{coordinates= dest_coord(co);
+    	System.out.println(coordinates[0]+" "+coordinates[1]);
     	} catch(Exception e) {
     		throw new Exception("invalid coordinates");
     	}
     	int x= coordinates[0];
     	int y= coordinates[1];
-    	if(player=="b") player="w";
-		else player="b";
+    	
     	for(int pos_y=0; pos_y<7; pos_y++) {
     		for(int pos_x=0; pos_x<7;pos_x++) {
     			char figure= board[pos_y][pos_x];
     			if((player=="w" & ((int)figure)>96) || player=="b" & ((int)figure)<90 &((int)figure)>10) {
-    				
-    				Figur cur= switchFigur(figure, player);
-    				/*for(String p:cur.validMoves(board, pos_y, pos_x)) {
+    				String pp;
+    		    	if(player=="b") pp="w";
+    				else pp="b";
+    				Figur cur= switchFigur(figure, pp);
+    				for(String p:cur.validMoves(this, pos_y, pos_x)) {
     		    		System.out.println(cur.getClass() +" "+p);
-    		    	}*/
+    		    	}
     				poss_Moves.addAll(cur.validMoves(this, pos_y, pos_x));
     				/*for(String p:poss_Moves) {
     		    		System.out.println(p);
@@ -353,4 +366,3 @@ public class Board implements Serializable{
    
         
 }
-
