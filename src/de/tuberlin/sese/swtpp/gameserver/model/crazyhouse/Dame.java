@@ -11,8 +11,8 @@ public class Dame extends Figur {
 	}
 	public ArrayList<String> getValidmove(){return validmove;}
 	@Override
-	public ArrayList<String> validMoves(char[][] board, int x, int y) throws Exception {
-		
+	public ArrayList<String> validMoves(Board b, int x, int y) {
+		char[][] board=b.getBoard().clone();
 		this.validmove.clear();
 		
 		if (this.getPlayer()=="w"){
@@ -89,7 +89,7 @@ public class Dame extends Figur {
 				j--;
 			}
 			i=x+1;
-			while(i<board.length && i>=0){  //Oben
+			while(i<board.length && i>=0){  //Unten
 				if(board[i][y]=='\0'){
 					String move=this.generateString(i, y);
 					this.validmove.add(move);
@@ -105,7 +105,7 @@ public class Dame extends Figur {
 				i++;
 			}
 			i=x-1;
-			while(i<board.length && i>=0){  //Unten
+			while(i<board.length && i>=0){  //Oben
 				if(board[i][y]=='\0'){
 					String move=this.generateString(i, y);
 					this.validmove.add(move);
@@ -114,7 +114,7 @@ public class Dame extends Figur {
 					String move=this.generateString(i, y);
 					this.validmove.add(move);
 					break; 										// beende die Schleife
-				}
+				} 
 				if(Character.isUpperCase(board[i][y])){			// pr?fe ob eine Figur mit gleicher Farbe auf dem Zielfeld steht
 					break; 										// beende die Schleife ohne das Feld zu adden
 				}
@@ -152,7 +152,8 @@ public class Dame extends Figur {
 					break; 										// beende die Schleife ohne das Feld zu adden
 				}
 				i++;
-			}return this.validmove;
+			}
+			return this.filterMoves(b, validmove, x, y);
         }else{ // player black
 			int i=x-1;
 			int j=y-1;
@@ -291,6 +292,7 @@ public class Dame extends Figur {
 				}
 				i++;
 			}
+			
 			return this.validmove;
         }
 	}

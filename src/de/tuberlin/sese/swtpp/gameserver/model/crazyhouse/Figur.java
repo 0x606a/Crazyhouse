@@ -17,7 +17,27 @@ public abstract class Figur
     public String getPlayer() {return player;}
   //  public ArrayList<String> getValidmove(){return validmove;}
     
-    public abstract ArrayList<String> validMoves(char[][] board, int x, int y)throws Exception; // kriegt beim Aufruf auf dem Feld die Startposition
+    public abstract ArrayList<String> validMoves(Board b, int x, int y); // kriegt beim Aufruf auf dem Feld die Startposition
+    public ArrayList<String> filterMoves(Board b, ArrayList<String> moves, int x, int y){
+    	ArrayList<String> val= new ArrayList<>();
+    	boolean check=true;
+    	char figure = b.getBoard()[x][y];
+    	for(int i= 0; i<moves.size(); i++) {
+        	Board temp= b.copy();
+        	String m_S = b.xytoString(y, x)+"-"+moves.get(i);        	
+    		temp.doMoveBoard(m_S, y, x, figure);
+
+    		System.out.println(m_S);
+    		System.out.println(temp.BoardToString());
+    		try {
+    			check= temp.Check(getPlayer(), false);
+    		}catch(Exception e) {
+    			System.out.println ("bei ischeck ist irgendwas nicht durchgegangen");
+    		}
+    		if(!check) val.add(moves.get(i));
+       	}
+    	return  val;
+    }
     public String generateString(int x, int y)
     {
     	String zeile="";
@@ -52,9 +72,11 @@ public abstract class Figur
                 break;
         }
     	//String zugString= ""+zeile+x;
-    	String zugString= ""+zeile+Math.abs(x-8);
+    	String zugString= ""+zeile+Math.abs(8-x);
     	return zugString;
     }
  
+    
+}
     
 }

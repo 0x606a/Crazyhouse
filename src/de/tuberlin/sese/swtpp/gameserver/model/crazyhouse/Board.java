@@ -115,7 +115,7 @@ public class Board implements Serializable{
     		
     		//figur aufrufen(player Ã¼bergeben als String)
     		Figur f= switchFigur(figure, player);
-    		val_moves= f.validMoves(board, y, x);
+    		val_moves= f.validMoves(this, y, x);
     		for(int s = 0;s<val_moves.size(); s++) {
     			String temp=""+ move.charAt(0)+move.charAt(1)+'-'+ val_moves.get(s);
     			val_moves.set(s, temp);
@@ -135,7 +135,7 @@ public class Board implements Serializable{
     	
     	
     }
-    private void doMoveBoard(String move, int x, int y, char figure) {
+    public void doMoveBoard(String move, int x, int y, char figure) {
     	//figur ziehen
     	char [][] dest = new char[8][8];
     	for(int i= 0; i<8; i++) {
@@ -181,7 +181,8 @@ public class Board implements Serializable{
     //fÃ¼gt figur zu spare parts hinzu 
     private void addSpare_part(char f) 
     {
-    	if(Spare_parts.isEmpty()) { Spare_parts=""+f;}
+    	if(Spare_parts.isEmpty()) { 
+    		Spare_parts=""+f;}
     	else 
     	{
     		int val = (int) f;
@@ -248,8 +249,12 @@ public class Board implements Serializable{
         return Spare_parts;
     }
     private int[] dest_coord(String co) throws Exception{
-    	if(((int)co.charAt(0) < 97)||((int)co.charAt(0)) > 104 ) throw new Exception("invalid String");
-    	if(((int)co.charAt(1) < 49)||((int)co.charAt(1)) > 56 ) throw new Exception("invalid String");
+    	if(((int)co.charAt(0) < 97)||((int)co.charAt(0)) > 104 ) {
+    		throw new Exception("invalid String");
+    	}
+    	if(((int)co.charAt(1) < 49)||((int)co.charAt(1)) > 56 ) {
+    		throw new Exception("invalid String");
+    	}
     	int [] c= new int[2];
     	c[0] = ((int) co.charAt(0))-97;
 		c[1] = 7-(((int) co.charAt(1))-49);
@@ -277,7 +282,7 @@ public class Board implements Serializable{
 				}
 			}
 		}
-    	k_Moves = k.validMoves(board, y, x);
+    	k_Moves = k.validMoves(this, y, x);
     	String co = xytoString(x,y);
     	try {
     		return isCheck(poss_Moves,k_Moves, player, co, checkmate);
@@ -288,20 +293,27 @@ public class Board implements Serializable{
     }
     private boolean isCheck(ArrayList<String> poss_Moves, ArrayList<String> k_Moves, String player, String co, boolean checkmate)throws Exception {
     	int [] coordinates;
-    	try{coordinates= dest_coord(co);} catch(Exception e) {
+    	try{coordinates= dest_coord(co);
+    	} catch(Exception e) {
     		throw new Exception("invalid coordinates");
     	}
     	int x= coordinates[0];
     	int y= coordinates[1];
+    	if(player=="b") player="w";
+		else player="b";
     	for(int pos_y=0; pos_y<7; pos_y++) {
     		for(int pos_x=0; pos_x<7;pos_x++) {
     			char figure= board[pos_y][pos_x];
     			if((player=="w" & ((int)figure)>96) || player=="b" & ((int)figure)<90 &((int)figure)>10) {
+    				
     				Figur cur= switchFigur(figure, player);
-    				for(String p:cur.validMoves(board, pos_y, pos_x)) {
+    				/*for(String p:cur.validMoves(board, pos_y, pos_x)) {
     		    		System.out.println(cur.getClass() +" "+p);
-    		    	}
-    				poss_Moves.addAll(cur.validMoves(board, pos_y, pos_x));
+    		    	}*/
+    				poss_Moves.addAll(cur.validMoves(this, pos_y, pos_x));
+    				/*for(String p:poss_Moves) {
+    		    		System.out.println(p);
+    		    	}*/
     			}
     		}
     	}
@@ -309,19 +321,34 @@ public class Board implements Serializable{
     	
     	if(poss_Moves.contains(xytoString(x,y))) {
     	  	if(checkmate) return isCheckMate(k_Moves, poss_Moves);
-    		return true;
+    	  	else return true;
     	}
     	return false;
     	
     }
     private boolean isCheckMate(ArrayList<String> k_Moves, ArrayList<String> poss_Moves) {
     	int cnt = 0;
+    	for(String p:poss_Moves) {
+    		System.out.println(p);
+    	}
+    	System.out.println();
+    	for(String k:k_Moves) {
+    		System.out.println(k);
+    	}
     	for(String m:k_Moves) {
-			if(poss_Moves.contains(m)) cnt++;
+    		//System.out.println(cnt +" "+m );
+			if(poss_Moves.contains(m)) {
+				cnt++;
+				//System.out.println(cnt +" "+m );
+			}
 			
 		}
     	if(cnt==k_Moves.size()) return true;
     	else return false;
+    }
+    public Board copy() {
+    	Board b = new Board(this.BoardToString());
+    	return b;
     }
    
         
