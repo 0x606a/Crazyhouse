@@ -91,6 +91,7 @@ public class Board implements Serializable{
     		int dest_y = co[1];
         	if(dest[dest_y][dest_x]!='\0') { System.out.println("auf dem ausgewählten Feld steht bereits eine Figur!");return false;}
         	dest = board.clone();
+        	if((figure=='P' || figure =='p')&(dest_y==0 || dest_y==7)) throw new Exception("nicht auf den spielrand springen!");
         	if(figure=='P')figure='F';
     		if(figure=='p')figure='f';
     		
@@ -118,7 +119,7 @@ public class Board implements Serializable{
     		
     		//figur aufrufen(player Ã¼bergeben als String)
     		Figur f= switchFigur(figure, player);
-    		val_moves= f.validMoves(this, y, x);
+    		val_moves= f.validMoves(board, y, x);
             val_moves=f.filterMoves(this, val_moves, y, x);
     		for(int s = 0;s<val_moves.size(); s++) {
     			String temp=""+ move.charAt(0)+move.charAt(1)+'-'+ val_moves.get(s);
@@ -293,7 +294,7 @@ public class Board implements Serializable{
 			}
 		}
     	
-    	k_Moves = k.validMoves(this, y, x);
+    	k_Moves = k.validMoves(board, y, x);
     	String co = xytoString(x,y);
     	try {
     		return isCheck(poss_Moves,k_Moves, player, co, checkmate);
@@ -320,10 +321,10 @@ public class Board implements Serializable{
     		    	if(player=="b") pp="w";
     				else pp="b";
     				Figur cur= switchFigur(figure, pp);
-    				for(String p:cur.validMoves(this, pos_y, pos_x)) {
+    				for(String p:cur.validMoves(board, pos_y, pos_x)) {
     		    		System.out.println(cur.getClass() +" "+p);
     		    	}
-    				poss_Moves.addAll(cur.validMoves(this, pos_y, pos_x));
+    				poss_Moves.addAll(cur.validMoves(board, pos_y, pos_x));
     				/*for(String p:poss_Moves) {
     		    		System.out.println(p);
     		    	}*/
@@ -361,6 +362,8 @@ public class Board implements Serializable{
     }
     public Board copy() {
     	Board b = new Board(this.BoardToString());
+    	b.board = this.board.clone();
+    	b.Spare_parts= this.Spare_parts;
     	return b;
     }
    
