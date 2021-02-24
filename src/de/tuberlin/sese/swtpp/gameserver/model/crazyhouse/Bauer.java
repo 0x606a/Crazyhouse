@@ -65,7 +65,7 @@ public class Bauer extends Figur
 
 		if(board[x-1][y]=='\0')
 		{
-			String move = this.generateString(x+1, y);
+			String move = this.generateString(x-1, y);
 			this.validmove.add(move);
 			if((f & (x-2)>0 )& board[x-2][y]=='\0') {
 				move = this.generateString(x-2, y);
