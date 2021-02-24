@@ -42,9 +42,9 @@ public abstract class Figur
     	ArrayList<String> newMoves= new ArrayList<String>();
     	for(String e: validmoves)
     	{
-	    	if(((int)e.charAt(0) < 97)||((int)e.charAt(0)) > 104 ) {
+	    	if(((int)e.charAt(0) < 97)||((int)e.charAt(0)) >= 104 ) {
 	    	}else{
-		    	if(((int)e.charAt(1) < 48)||((int)e.charAt(1)) > 55 ) {
+		    	if(((int)e.charAt(1) < 49)||((int)e.charAt(1)) > 56 ) {
 		    	}else {
 			    		int x = ((int) e.charAt(0))-97;
 			    		int y = 7-(((int) e.charAt(1))-49);
@@ -97,7 +97,8 @@ public abstract class Figur
         }
     	//String zugString= ""+zeile+x;
     	if(x<=7 && x>=0) {zugString= ""+zeile+Math.abs(8-x);}
-    	else {zugString= ""+zeile+x;}
+    	else {	x++;
+    			zugString= ""+zeile+x;}
     	return zugString;
     }
  

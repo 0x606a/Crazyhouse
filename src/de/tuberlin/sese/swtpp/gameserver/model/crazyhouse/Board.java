@@ -304,6 +304,7 @@ public class Board implements Serializable{
     	
     }
     private boolean isCheck(ArrayList<String> poss_Moves, ArrayList<String> k_Moves, String player, String co, boolean checkmate)throws Exception {
+    	if(k_Moves.isEmpty()) {return false;}
     	int [] coordinates;
     	try{coordinates= dest_coord(co);
     	System.out.println(coordinates[0]+" "+coordinates[1]);
@@ -313,8 +314,8 @@ public class Board implements Serializable{
     	int x= coordinates[0];
     	int y= coordinates[1];
     	
-    	for(int pos_y=0; pos_y<7; pos_y++) {
-    		for(int pos_x=0; pos_x<7;pos_x++) {
+    	for(int pos_y=0; pos_y<=7; pos_y++) {
+    		for(int pos_x=0; pos_x<=7;pos_x++) {
     			char figure= board[pos_y][pos_x];
     			if((player=="w" & ((int)figure)>96) || player=="b" & ((int)figure)<90 &((int)figure)>10) {
     				String pp;
