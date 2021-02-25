@@ -1,5 +1,5 @@
-package de.tuberlin.sese.swtpp.gameserver.model.crazyhouse;
 
+package de.tuberlin.sese.swtpp.gameserver.model.crazyhouse;
 import java.io.Serializable;
 
 import de.tuberlin.sese.swtpp.gameserver.model.Game;
@@ -24,17 +24,17 @@ public class CrazyhouseGame extends Game implements Serializable{
 	// internal representation of the game state
 	//private String board = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/";
 	private String board = "////////";
-		
+	private Board newBoard;
 	/************************
 	 * constructors
 	 ***********************/
 
 	public CrazyhouseGame() {
 		super();
-		
-		//board="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/";
-		board="rnbqkbnr/p2ppppp/1p6/2P5/8/1P6/P1P1PPPP/RNBQKBNR/P";	//bauer schlagen
-		
+		//this.board="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/";
+		board="1nbk1bnr/2p1pp2/rpQ5/p4p2/7p/2PQP3/PP1P1KPP/RNB2B1R/PPPn";	//bauer schlagen
+		newBoard=new Board("1nbk1bnr/2p1pp2/rpQ5/p4p2/7p/2PQP3/PP1P1KPP/RNB2B1R/PPPn");
+
 		// TODO: initialize internal model if necessary 
 	}
 
@@ -221,29 +221,42 @@ public class CrazyhouseGame extends Game implements Serializable{
 	@Override
 	public boolean tryMove(String moveString, Player player){
 		
-		Board newBoard=new Board(board);
 		// übergibt newBoard objekt den String. bekommt als Antwort 
-		Move move = new Move(moveString,newBoard.BoardToString(),player); // erzeuge aus dem String einen Move
+		Move move = new Move(moveString,this.newBoard.BoardToString(),player); // erzeuge aus dem String einen Move
 		String farbe=this.nextPlayerString();
-		
-		
 		boolean validMove = false;
 			if(farbe=="w")
 			{
 				try {
-						validMove=newBoard.checkMove(moveString, farbe);	
-						this.nextPlayer=blackPlayer;// checke den Move auf gültigkeit
+						validMove=newBoard.checkMove(moveString, farbe);
+						if(newBoard.Check(farbe, true))
+						{
+							blackPlayer.setWinner();
+							this.finished=true;
+						}
+						else 
+						{
+							this.nextPlayer=blackPlayer;// checke den Move auf gültigkeit
+						}
 						
 					} catch (Exception e) {
 						
 						e.printStackTrace();
 					}
-			}
+			} 
 			else
 			{
 				try {
 					validMove=newBoard.checkMove(moveString, farbe);
-					this.nextPlayer=whitePlayer;
+					if(newBoard.Check(farbe, true))
+					{
+						whitePlayer.setWinner();
+						this.finished=true;
+					}
+					else
+					{
+						this.nextPlayer=whitePlayer;
+					}
 				} catch (Exception e)
 				{
 					e.printStackTrace();
@@ -254,17 +267,15 @@ public class CrazyhouseGame extends Game implements Serializable{
 		{
 			this.history.add(move);									// füge den Move zur History hinzu
 			this.setNextPlayer(nextPlayer);
-			this.board=newBoard.BoardToString();
-			return validMove;
-			
 		}
 		else
 		{
-			this.board=newBoard.BoardToString();
-			System.out.println(this.getBoard());
 			this.setNextPlayer(player);
-			return validMove;
+		
 		}
+		this.board=newBoard.BoardToString();
+		System.out.println(this.getBoard());
+		return validMove;
 	}
 	
 		// replace with real implementation
