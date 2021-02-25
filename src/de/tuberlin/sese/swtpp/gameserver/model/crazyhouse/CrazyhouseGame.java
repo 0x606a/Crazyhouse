@@ -12,7 +12,7 @@ public class CrazyhouseGame extends Game implements Serializable{
 	 *
 	 */
 	private static final long serialVersionUID = 5424778147226994452L;
-	
+
 	/************************
 	 * member
 	 ***********************/
@@ -20,7 +20,7 @@ public class CrazyhouseGame extends Game implements Serializable{
 	// just for better comprehensibility of the code: assign white and black player
 	private Player blackPlayer;
 	private Player whitePlayer;
-	
+
 	// internal representation of the game state
 	//private String board = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/";
 	private String board = "////////";
@@ -215,72 +215,45 @@ public class CrazyhouseGame extends Game implements Serializable{
 
 	@Override
 	public String getBoard() {
-		
+
 		return board;
 	}
 
 	@Override
 	public boolean tryMove(String moveString, Player player){
-		
-		// übergibt newBoard objekt den String. bekommt als Antwort 
+
+		// ï¿½bergibt newBoard objekt den String. bekommt als Antwort 
 		Move move = new Move(moveString,this.newBoard.BoardToString(),player); // erzeuge aus dem String einen Move
 		String farbe=this.nextPlayerString();
 		boolean validMove = false;
-			if(farbe=="w")
-			{
-				try {
-						validMove=newBoard.checkMove(moveString, farbe);
-						if(newBoard.Check(farbe, true))
-						{
-							blackPlayer.setWinner();
-							this.finished=true;
-						}
-						else 
-						{
-							this.nextPlayer=blackPlayer;// checke den Move auf gültigkeit
-						}
-						
-					} catch (Exception e) {
-						
-						e.printStackTrace();
-					}
-			} 
-			else
-			{
-				try {
-					validMove=newBoard.checkMove(moveString, farbe);
-					if(newBoard.Check(farbe, true))
-					{
-						whitePlayer.setWinner();
-						this.finished=true;
-					}
-					else
-					{
-						this.nextPlayer=whitePlayer;
-					}
-				} catch (Exception e)
-				{
-					e.printStackTrace();
-				}
-			}
-				
-		if(validMove)												// wenn Move gültig
-		{
-			this.history.add(move);									// füge den Move zur History hinzu
+		if(farbe=="w")
+		{try {validMove=newBoard.checkMove(moveString, farbe);
+			if(newBoard.Check(farbe, true)){blackPlayer.setWinner();
+				this.finished=true;
+			}else{this.nextPlayer=blackPlayer;/* checke den Move auf gï¿½ltigkeit*/}
+		} catch (Exception e) {e.printStackTrace();}
+		}else{try {validMove=newBoard.checkMove(moveString, farbe);
+			if(newBoard.Check(farbe, true))
+			{whitePlayer.setWinner();
+				this.finished=true;
+			}else{this.nextPlayer=whitePlayer;}
+		} catch (Exception e){
+			e.printStackTrace();}
+		}
+
+		if(validMove) {												// wenn Move gï¿½ltig
+
+			this.history.add(move);									// fï¿½ge den Move zur History hinzu
 			this.setNextPlayer(nextPlayer);
-		}
-		else
-		{
-			this.setNextPlayer(player);
-		
-		}
+		}else{
+			this.setNextPlayer(player);}
 		this.board=newBoard.BoardToString();
 		System.out.println(this.getBoard());
 		return validMove;
 	}
-	
-		// replace with real implementation
-		
-	
+
+	// replace with real implementation
+
+
 
 }
