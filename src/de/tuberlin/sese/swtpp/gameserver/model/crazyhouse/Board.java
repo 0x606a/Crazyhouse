@@ -83,14 +83,16 @@ public class Board implements Serializable{
     	//figur aus spare parts string
     	
     	if(move.length()==4) {
+    		Board d = this.copy();
     		figure= move.charAt(0);
     		if(player=="b" & ((int) figure)<97) {System.out.println("Nicht deine Figur!"); return false;}
     		if(player=="w" & ((int) figure)>90) {System.out.println("Nicht deine Figur!"); return false;}
-    		try {co = dest_coord(move.substring(3));} catch(Exception e) {throw new Exception("invalid String!}");}
+    		try {co = dest_coord(move.substring(2));} catch(Exception e) {throw new Exception("invalid String!}");}
     		int dest_x = co[0];
     		int dest_y = co[1];
         	if(dest[dest_y][dest_x]!='\0') { System.out.println("auf dem ausgewählten Feld steht bereits eine Figur!");return false;}
-        	dest = board.clone();
+        	dest = d.getBoard();
+        	if((figure=='P' || figure =='p')&(dest_y==0 || dest_y==7)) throw new Exception("nicht auf den spielrand springen!");
         	if(figure=='P')figure='F';
     		if(figure=='p')figure='f';
     		
@@ -100,10 +102,12 @@ public class Board implements Serializable{
         	} catch(Exception e) {
         		throw new Exception("invalid move");
         	}
-    		
-        	board=dest;
+    		if(d.Check(player, false)) {
+    			board=dest;
+    			return true;
         	}
-    	
+    		else return false;
+    	}
     	//figur aus feld
     	if(move.length()==5) {
     		int x = ((int) move.charAt(0))-97;
@@ -118,7 +122,7 @@ public class Board implements Serializable{
     		
     		//figur aufrufen(player Ã¼bergeben als String)
     		Figur f= switchFigur(figure, player);
-    		val_moves= f.validMoves(this, y, x);
+    		val_moves= f.validMoves(board, y, x);
             val_moves=f.filterMoves(this, val_moves, y, x);
     		for(int s = 0;s<val_moves.size(); s++) {
     			String temp=""+ move.charAt(0)+move.charAt(1)+'-'+ val_moves.get(s);
@@ -203,7 +207,6 @@ public class Board implements Serializable{
     
    //gibt objekt board als string zurÃ¼ck
     public String BoardToString() {
-    	////////////////////////////////////////////////f to p
     	String b_String="";
     	
     	char tmp;
@@ -293,7 +296,7 @@ public class Board implements Serializable{
 			}
 		}
     	
-    	k_Moves = k.validMoves(this, y, x);
+    	k_Moves = k.validMoves(board, y, x);
     	String co = xytoString(x,y);
     	try {
     		return isCheck(poss_Moves,k_Moves, player, co, checkmate);
@@ -303,66 +306,78 @@ public class Board implements Serializable{
     	
     }
     private boolean isCheck(ArrayList<String> poss_Moves, ArrayList<String> k_Moves, String player, String co, boolean checkmate)throws Exception {
+    	if(k_Moves.isEmpty()) {return false;}
     	int [] coordinates;
+    	ArrayList<String> comp = new ArrayList<>();
     	try{coordinates= dest_coord(co);
-    	System.out.println(coordinates[0]+" "+coordinates[1]);
     	} catch(Exception e) {
     		throw new Exception("invalid coordinates");
     	}
     	int x= coordinates[0];
     	int y= coordinates[1];
     	
-    	for(int pos_y=0; pos_y<7; pos_y++) {
-    		for(int pos_x=0; pos_x<7;pos_x++) {
+    	for(int pos_y=0; pos_y<=7; pos_y++) {
+    		for(int pos_x=0; pos_x<=7;pos_x++) {
     			char figure= board[pos_y][pos_x];
     			if((player=="w" & ((int)figure)>96) || player=="b" & ((int)figure)<90 &((int)figure)>10) {
     				String pp;
     		    	if(player=="b") pp="w";
     				else pp="b";
-    				Figur cur= switchFigur(figure, pp);
-    				for(String p:cur.validMoves(this, pos_y, pos_x)) {
-    		    		System.out.println(cur.getClass() +" "+p);
-    		    	}
-    				poss_Moves.addAll(cur.validMoves(this, pos_y, pos_x));
+
+        			Figur cur= switchFigur(figure, pp);
+    				for( String m:cur.validMoves(board, pos_y, pos_x)) {
+    					comp.add(xytoString(pos_x,pos_y) +"-" +m);
+    					poss_Moves.add(m);
+    				}
     				/*for(String p:poss_Moves) {
     		    		System.out.println(p);
     		    	}*/
     			}
     		}
     	}
-    	System.out.println(xytoString(x,y));
     	
     	if(poss_Moves.contains(xytoString(x,y))) {
-    	  	if(checkmate) return isCheckMate(k_Moves, poss_Moves);
+    		int index= poss_Moves.indexOf(xytoString(x,y));
+    	  	if(checkmate) return isCheckMate(player, k_Moves, poss_Moves, comp.get(index));
     	  	else return true;
     	}
     	return false;
     	
     }
-    private boolean isCheckMate(ArrayList<String> k_Moves, ArrayList<String> poss_Moves) {
+    private boolean isCheckMate(String player, ArrayList<String> k_Moves, ArrayList<String> poss_Moves, String comp) {
+    	
     	int cnt = 0;
-    	for(String p:poss_Moves) {
-    		System.out.println(p);
-    	}
-    	System.out.println();
-    	for(String k:k_Moves) {
-    		System.out.println(k);
-    	}
+    	ArrayList <String> t_Moves = new ArrayList<>();
+    	if(k_Moves.contains(comp.substring(0,2)) &poss_Moves.contains(comp.substring(0,2))) k_Moves.remove(comp.substring(0,2));
     	for(String m:k_Moves) {
-    		//System.out.println(cnt +" "+m );
+    		System.out.println(m );
 			if(poss_Moves.contains(m)) {
 				cnt++;
-				//System.out.println(cnt +" "+m );
+				System.out.println(cnt +" "+m );
 			}
-			
 		}
+		System.out.println(k_Moves.size());
+    	for(int i =0; i<8; i++) {
+    		for(int j =0; j<8; j++) {
+    			char figure= board[i][j];
+    			System.out.println("Hier muss noch eine Spare_parts zugmöglichkeiten hinzugefügt werden!");
+    			if((player=="b" & ((int)figure)>96) &figure!='k' || player=="w" & ((int)figure)<90 &((int)figure)>10 &figure!='K') {
+    				Figur cur= switchFigur(figure, player);
+    				t_Moves.addAll(cur.validMoves(board, i, j));
+    			}
+    		}
+    		
+    	}
+    	if(t_Moves.contains(comp.substring(0,2))) return false;
+    	if(k_Moves.isEmpty()) return true;
     	if(cnt==k_Moves.size()) return true;
     	else return false;
     }
     public Board copy() {
     	Board b = new Board(this.BoardToString());
+    	b.board = this.board.clone();
+    	b.Spare_parts= this.Spare_parts;
     	return b;
     }
    
         
-}
