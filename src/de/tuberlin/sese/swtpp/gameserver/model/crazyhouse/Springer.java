@@ -9,7 +9,7 @@ public class Springer extends Figur
 	public Springer(String player)
 	{
 		super(player);
-		this.validmove = new ArrayList<String>();
+		this.validmove = new ArrayList<String>(); 
 	}
 	public ArrayList<String> getValidmove(){return validmove;}
 	
@@ -61,5 +61,5 @@ public class Springer extends Figur
 		this.validmove=this.sortMoves(board,validmove);
 		return this.validmove;
 	}
-	
 }
+
