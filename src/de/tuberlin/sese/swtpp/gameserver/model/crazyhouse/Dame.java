@@ -11,8 +11,7 @@ public class Dame extends Figur {
 	}
 	public ArrayList<String> getValidmove(){return validmove;}
 	@Override
-	public ArrayList<String> validMoves(Board b, int x, int y) {
-		char[][] board=b.getBoard().clone();
+	public ArrayList<String> validMoves(char[][] board, int x, int y) {
 		this.validmove.clear();
 		
 		if (this.getPlayer()=="w"){
@@ -153,7 +152,7 @@ public class Dame extends Figur {
 				}
 				i++;
 			}
-			return this.filterMoves(b, validmove, x, y);
+			return validmove;
         }else{ // player black
 			int i=x-1;
 			int j=y-1;
