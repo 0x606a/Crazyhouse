@@ -375,7 +375,12 @@ public class Board implements Serializable{
     }
     public Board copy() {
     	Board b = new Board(this.BoardToString());
-    	b.board = this.board.clone();
+    	for(int i=0; i<8; i++) {
+    		for(int j =0; j< 8; j++) {
+    			b.board[i][j]=this.getBoard()[i][j];
+    		}
+    	}
+
     	b.Spare_parts= this.Spare_parts;
     	return b;
     }
