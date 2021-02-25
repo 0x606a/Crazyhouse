@@ -121,6 +121,7 @@ public class Bauer extends Figur
 		{
 			move = this.generateString(x+1, y);
 
+	    	System.out.println(move.getClass());
 			this.validmove.add(move);
 			if((f & (x+2)<8 )& board[x+2][y]=='\0') {
 				move = this.generateString(x+2, y);
@@ -147,12 +148,12 @@ public class Bauer extends Figur
 			}
 		}
 		if(y==7){// rechter Rand
-			if(Character.isUpperCase(board[x+1][y-1])) {	// pr�fe ob eine Figur mit gleicher Farbe auf dem Zielfeld steht
-			
+			if(Character.isUpperCase(board[x+1][y-1]))	// pr�fe ob eine Figur mit gleicher Farbe auf dem Zielfeld steht
+			{
 				move=this.generateString(x+1, y-1);	// generiere aus den Indizes einen String
 				this.validmove.add(move);					// speichere �brige Ziele in validmoves
 			}			
-		}
+			}
 		}
 	}
 }
