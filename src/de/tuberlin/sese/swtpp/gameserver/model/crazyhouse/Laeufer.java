@@ -11,7 +11,7 @@ public class Laeufer extends Figur{
 	}
 	public ArrayList<String> getValidmove(){return validmove;}
 	@Override
-	public ArrayList<String> validMoves(char[][] board, int x, int y) throws Exception {
+	public ArrayList<String> validMoves(char[][] board, int x, int y) {
 		
 		this.validmove.clear();
 		

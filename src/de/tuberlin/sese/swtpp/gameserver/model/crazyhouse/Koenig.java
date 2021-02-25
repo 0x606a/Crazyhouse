@@ -10,335 +10,63 @@ public class Koenig extends Figur
 		super(player);
 		this.validmove = new ArrayList<String>();
 	}
-	public ArrayList<String> getValidmove(){return validmove;}
-	@Override
-	public ArrayList<String> validMoves(char[][] board, int x, int y) throws Exception 
+	
+	
+	
+	private ArrayList<String> moveUp(char[][] board, int x, int y)
 	{
-		this.validmove.clear();
+		ArrayList<String> temparray= new ArrayList<String>();
 		
-		if ( this.getPlayer()=="w"){
-			if(y>0 && y<7){ //ohne Rand
-				//moegliche freie Felder
-				if(board[x-1][y]=='\0'){
-					String move = this.generateString(x-1, y);
-					this.validmove.add(move);
-				}
-				if(board[x+1][y]=='\0'){
-					String move = this.generateString(x+1, y);
-					this.validmove.add(move);
-				}
-				if(board[x][y-1]=='\0'){
-					String move = this.generateString(x, y-1);
-					this.validmove.add(move);
-				}
-				if(board[x][y+1]=='\0'){
-					String move = this.generateString(x, y+1);
-					this.validmove.add(move);
-				}
-				if(board[x-1][y-1]=='\0'){
-					String move = this.generateString(x-1, y-1);
-					this.validmove.add(move);
-				}
-				if(board[x-1][y+1]=='\0'){
-					String move = this.generateString(x-1, y+1);
-					this.validmove.add(move);
-				}
-				if(board[x+1][y+1]=='\0'){
-					String move = this.generateString(x+1, y+1);
-					this.validmove.add(move);
-				}
-				if(board[x+1][y-1]=='\0'){
-					String move = this.generateString(x+1, y-1);
-					this.validmove.add(move);
-				}
-				//Moeglichkeiten zu schlagen
-				if(Character.isLowerCase(board[x-1][y])){
-					String move = this.generateString(x-1, y);
-					this.validmove.add(move);
-				}
-				if(Character.isLowerCase(board[x+1][y])){
-					String move = this.generateString(x+1, y);
-					this.validmove.add(move);
-				}
-				if(Character.isLowerCase(board[x][y-1])){
-					String move = this.generateString(x, y-1);
-					this.validmove.add(move);
-				}
-				if(Character.isLowerCase(board[x][y+1])){
-					String move = this.generateString(x, y+1);
-					this.validmove.add(move);
-				}
-				if(Character.isLowerCase(board[x-1][y-1])){
-					String move = this.generateString(x-1, y-1);
-					this.validmove.add(move);
-				}
-				if(Character.isLowerCase(board[x-1][y+1])){
-					String move = this.generateString(x-1, y+1);
-					this.validmove.add(move);
-				}
-				if(Character.isLowerCase(board[x+1][y+1])){
-					String move = this.generateString(x+1, y+1);
-					this.validmove.add(move);
-				}
-				if(Character.isLowerCase(board[x+1][y-1])) {
-					String move = this.generateString(x + 1, y - 1);
-					this.validmove.add(move);
-				}
-			}
-			else{ // falls der Koenig an einem der Raender steht
-				if(y==0) { // linker Rand
-					//moegliche freie Felder
-					if(board[x-1][y]=='\0'){
-						String move = this.generateString(x-1, y);
-						this.validmove.add(move);
-					}
-					if(board[x+1][y]=='\0'){
-						String move = this.generateString(x+1, y);
-						this.validmove.add(move);
-					}
-					if(board[x][y+1]=='\0'){
-						String move = this.generateString(x, y+1);
-						this.validmove.add(move);
-					}
-					if(board[x-1][y+1]=='\0'){
-						String move = this.generateString(x-1, y+1);
-						this.validmove.add(move);
-					}
-					if(board[x+1][y+1]=='\0'){
-						String move = this.generateString(x+1, y+1);
-						this.validmove.add(move);
-					}
-					//Moeglichkeiten zu schlagen
-					if(Character.isLowerCase(board[x-1][y])){
-						String move = this.generateString(x - 1, y);
-						this.validmove.add(move);
-					}
-					if(Character.isLowerCase(board[x+1][y])){
-						String move = this.generateString(x+1, y);
-						this.validmove.add(move);
-					}
-					if(Character.isLowerCase(board[x][y+1])){
-						String move = this.generateString(x, y+1);
-						this.validmove.add(move);
-					}
-					if(Character.isLowerCase(board[x-1][y+1])){
-						String move = this.generateString(x-1, y+1);
-						this.validmove.add(move);
-					}
-					if(Character.isLowerCase(board[x+1][y+1])){
-						String move = this.generateString(x+1, y+1);
-						this.validmove.add(move);
-					}
-				}
-				if(y==7){ // rechter Rand
-					//moegliche freie Felder
-					if(board[x-1][y]=='\0'){
-						String move = this.generateString(x-1, y);
-						this.validmove.add(move);
-					}
-					if(board[x+1][y]=='\0'){
-						String move = this.generateString(x+1, y);
-						this.validmove.add(move);
-					}
-					if(board[x][y-1]=='\0'){
-						String move = this.generateString(x, y-1);
-						this.validmove.add(move);
-					}
-					if(board[x-1][y-1]=='\0'){
-						String move = this.generateString(x-1, y-1);
-						this.validmove.add(move);
-					}
-					if(board[x+1][y-1]=='\0'){
-						String move = this.generateString(x+1, y-1);
-						this.validmove.add(move);
-					}
-					//Moeglichkeiten zu schlagen
-					if(Character.isLowerCase(board[x-1][y])){
-						String move = this.generateString(x-1, y);
-						this.validmove.add(move);
-					}
-					if(Character.isLowerCase(board[x+1][y])){
-						String move = this.generateString(x+1, y);
-						this.validmove.add(move);
-					}
-					if(Character.isLowerCase(board[x][y-1])){
-						String move = this.generateString(x, y-1);
-						this.validmove.add(move);
-					}
-					if(Character.isLowerCase(board[x-1][y-1])){
-						String move = this.generateString(x-1, y-1);
-						this.validmove.add(move);
-					}
-					if(Character.isLowerCase(board[x+1][y-1])){
-						String move = this.generateString(x+1, y-1);
-						this.validmove.add(move);
-					}
-				}
-				//oberer und unterer Rand und gleiche figur auf feld break to be done?
-			}
-		}
-		else{  // black player
-			if(y>0 && y<7){ //ohne Rand
-				//moegliche freie Felder
-				if(board[x-1][y]=='\0'){
-					String move = this.generateString(x-1, y);
-					this.validmove.add(move);
-				}
-				if(board[x+1][y]=='\0'){
-					String move = this.generateString(x+1, y);
-					this.validmove.add(move);
-				}
-				if(board[x][y-1]=='\0'){
-					String move = this.generateString(x, y-1);
-					this.validmove.add(move);
-				}
-				if(board[x][y+1]=='\0'){
-					String move = this.generateString(x, y+1);
-					this.validmove.add(move);
-				}
-				if(board[x-1][y-1]=='\0'){
-					String move = this.generateString(x-1, y-1);
-					this.validmove.add(move);
-				}
-				if(board[x-1][y+1]=='\0'){
-					String move = this.generateString(x-1, y+1);
-					this.validmove.add(move);
-				}
-				if(board[x+1][y+1]=='\0'){
-					String move = this.generateString(x+1, y+1);
-					this.validmove.add(move);
-				}
-				if(board[x+1][y-1]=='\0'){
-					String move = this.generateString(x+1, y-1);
-					this.validmove.add(move);
-				}
-				//Moeglichkeiten zu schlagen
-				if(Character.isUpperCase(board[x-1][y])){
-					String move = this.generateString(x-1, y);
-					this.validmove.add(move);
-				}
-				if(Character.isUpperCase(board[x+1][y])){
-					String move = this.generateString(x+1, y);
-					this.validmove.add(move);
-				}
-				if(Character.isUpperCase(board[x][y-1])){
-					String move = this.generateString(x, y-1);
-					this.validmove.add(move);
-				}
-				if(Character.isUpperCase(board[x][y+1])){
-					String move = this.generateString(x, y+1);
-					this.validmove.add(move);
-				}
-				if(Character.isUpperCase(board[x-1][y-1])){
-					String move = this.generateString(x-1, y-1);
-					this.validmove.add(move);
-				}
-				if(Character.isUpperCase(board[x-1][y+1])){
-					String move = this.generateString(x-1, y+1);
-					this.validmove.add(move);
-				}
-				if(Character.isUpperCase(board[x+1][y+1])){
-					String move = this.generateString(x+1, y+1);
-					this.validmove.add(move);
-				}
-				if(Character.isUpperCase(board[x+1][y-1])){
-					String move = this.generateString(x+1, y-1);
-					this.validmove.add(move);
-				}
-			}
-			else{ // falls der Koenig an einem der Raender steht
-				if(y==0) { // linker Rand
-					//moegliche freie Felder
-					if(board[x-1][y]=='\0'){
-						String move = this.generateString(x-1, y);
-						this.validmove.add(move);
-					}
-					if(board[x+1][y]=='\0'){
-						String move = this.generateString(x+1, y);
-						this.validmove.add(move);
-					}
-					if(board[x][y+1]=='\0'){
-						String move = this.generateString(x, y+1);
-						this.validmove.add(move);
-					}
-					if(board[x-1][y+1]=='\0'){
-						String move = this.generateString(x-1, y+1);
-						this.validmove.add(move);
-					}
-					if(board[x+1][y+1]=='\0'){
-						String move = this.generateString(x+1, y+1);
-						this.validmove.add(move);
-					}
-					//Moeglichkeiten zu schlagen
-					if(Character.isUpperCase(board[x-1][y])){
-						String move = this.generateString(x - 1, y);
-						this.validmove.add(move);
-					}
-					if(Character.isUpperCase(board[x+1][y])){
-						String move = this.generateString(x+1, y);
-						this.validmove.add(move);
-					}
-					if(Character.isUpperCase(board[x][y+1])){
-						String move = this.generateString(x, y+1);
-						this.validmove.add(move);
-					}
-					if(Character.isUpperCase(board[x-1][y+1])){
-						String move = this.generateString(x-1, y+1);
-						this.validmove.add(move);
-					}
-					if(Character.isUpperCase(board[x+1][y+1])){
-						String move = this.generateString(x+1, y+1);
-						this.validmove.add(move);
-					}
-				}
-				if(y==7){ // rechter Rand
-					//moegliche freie Felder
-					if(board[x-1][y]=='\0'){
-						String move = this.generateString(x-1, y);
-						this.validmove.add(move);
-					}
-					if(board[x+1][y]=='\0'){
-						String move = this.generateString(x+1, y);
-						this.validmove.add(move);
-					}
-					if(board[x][y-1]=='\0'){
-						String move = this.generateString(x, y-1);
-						this.validmove.add(move);
-					}
-					if(board[x-1][y-1]=='\0'){
-						String move = this.generateString(x-1, y-1);
-						this.validmove.add(move);
-					}
-					if(board[x+1][y-1]=='\0'){
-						String move = this.generateString(x+1, y-1);
-						this.validmove.add(move);
-					}
-					//Moeglichkeiten zu schlagen
-					if(Character.isUpperCase(board[x-1][y])){
-						String move = this.generateString(x-1, y);
-						this.validmove.add(move);
-					}
-					if(Character.isUpperCase(board[x+1][y])){
-						String move = this.generateString(x+1, y);
-						this.validmove.add(move);
-					}
-					if(Character.isUpperCase(board[x][y-1])){
-						String move = this.generateString(x, y-1);
-						this.validmove.add(move);
-					}
-					if(Character.isUpperCase(board[x-1][y-1])){
-						String move = this.generateString(x-1, y-1);
-						this.validmove.add(move);
-					}
-					if(Character.isUpperCase(board[x+1][y-1])){
-						String move = this.generateString(x+1, y-1);
-						this.validmove.add(move);
-					}
-				}
-				//oberer und unterer Rand to be done?
-			}
-		}
-		return validmove;
-	}	
+			String move=this.generateString(x-1,y+1);
+			temparray.add(move);
+			move=this.generateString(x-1,y);
+			temparray.add(move);
+			move=this.generateString(x-1,y-1);
+			temparray.add(move);
+			
+		return temparray; 
+	}
+	private ArrayList<String> moveDown(char[][] board, int x, int y)
+	{
+		ArrayList<String> temparray= new ArrayList<String>();
+		String move=this.generateString(x+1,y+1);
+		temparray.add(move);
+		move=this.generateString(x+1,y-1);
+		temparray.add(move);
+		move=this.generateString(x+1,y);
+		temparray.add(move);
+		return temparray; 
+	}
+	private ArrayList<String> moveLeft(char[][] board, int x, int y)
+	{
+		ArrayList<String> temparray= new ArrayList<String>();
+		String move=this.generateString(x+1,y-1);
+		temparray.add(move);
+		move=this.generateString(x-1,y-1);
+		temparray.add(move);
+		move=this.generateString(x,y-1);
+		temparray.add(move);
+		return temparray; 
+	}
+	private ArrayList<String> moveRight(char[][] board, int x, int y)
+	{
+		ArrayList<String> temparray= new ArrayList<String>();
+		String move=this.generateString(x+1,y+1);
+		temparray.add(move);
+		move=this.generateString(x,y+1);
+		temparray.add(move);
+		move=this.generateString(x-1,y+1);
+		temparray.add(move);
+		return temparray; 
+	}
+	
+	public ArrayList<String> validMoves(char[][] board, int x, int y) 
+	{
+		this.validmove.addAll(moveUp(board,x,y));
+		this.validmove.addAll(moveDown(board,x,y));
+		this.validmove.addAll(moveRight(board,x,y));
+		this.validmove.addAll(moveLeft(board,x,y));
+		this.validmove=this.sortMoves(board,validmove);
+		return this.validmove;
+	}
 }
-

@@ -15,7 +15,7 @@ public class Turm extends Figur implements Serializable
 	}
 	public ArrayList<String> getValidmove(){return validmove;}
 	@Override
-	public ArrayList<String> validMoves(char[][] board, int x, int y)throws Exception 
+	public ArrayList<String> validMoves(char[][] board, int x, int y)
 	{
 		this.validmove.clear();
 		/*if(x >7 || y>7 || y<0 || x<0)// pruefe ob die Boardgrenze erreicht ist

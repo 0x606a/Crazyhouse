@@ -17,7 +17,7 @@ public abstract class Figur
     public String getPlayer() {return player;}
   //  public ArrayList<String> getValidmove(){return validmove;}
     
-    public abstract ArrayList<String> validMoves(Board b, int x, int y); // kriegt beim Aufruf auf dem Feld die Startposition
+    public abstract ArrayList<String> validMoves(char [][] b, int x, int y); // kriegt beim Aufruf auf dem Feld die Startposition
     public ArrayList<String> filterMoves(Board b, ArrayList<String> moves, int x, int y){
     	ArrayList<String> val= new ArrayList<>();
     	boolean check=true;
@@ -38,8 +38,26 @@ public abstract class Figur
        	}
     	return  val;
     }
-    public String generateString(int x, int y)
-    {
+    public ArrayList<String> sortMoves(char[][] board,ArrayList<String> validmoves){
+    	ArrayList<String> newMoves= new ArrayList<String>();
+    	for(String e: validmoves)
+    	{
+	    	if(((int)e.charAt(0) < 97)||((int)e.charAt(0)) >= 104 ) {
+	    	}else{
+		    	if(((int)e.charAt(1) < 49)||((int)e.charAt(1)) > 56 ) {
+		    	}else {
+			    		int x = ((int) e.charAt(0))-97;
+			    		int y = 7-(((int) e.charAt(1))-49);
+			    		if(this.player=="w" & !Character.isUpperCase(board[y][x])||this.player=="b" & !Character.isLowerCase(board[y][x]))
+				    			{
+					    			if(!newMoves.contains(e))
+							    	{
+							    		newMoves.add(e);
+							    	}}}}}
+    	return newMoves;
+    }
+    public String generateString(int x, int y){
+    	String zugString;
     	String zeile="";
     	switch (y)
         {
@@ -67,16 +85,23 @@ public abstract class Figur
             case 7:
             	zeile= "h";
                 break;
+            case 8:
+            	zeile= "x";
+            	break;
+            case 9:
+            	zeile= "x";
+                break;
             default:
                 System.out.print("keine gueltige Position!");
                 break;
         }
     	//String zugString= ""+zeile+x;
-    	String zugString= ""+zeile+Math.abs(8-x);
+    	if(x<=7 && x>=0) {zugString= ""+zeile+Math.abs(8-x);}
+    	else {	x++;
+    			zugString= ""+zeile+x;}
     	return zugString;
     }
  
     
 }
     
-}
