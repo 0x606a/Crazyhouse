@@ -1,10 +1,15 @@
 package de.tuberlin.sese.swtpp.gameserver.model.crazyhouse;
 
 
+import java.io.Serializable;
 import java.util.*;
-public class Bauer extends Figur
+public class Bauer extends Figur implements Serializable
 {
-	private boolean f =false;
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6021061111991706871L;
 	private ArrayList<String> validmove;
     public Bauer(String player )
     {
@@ -12,11 +17,6 @@ public class Bauer extends Figur
         this.validmove = new ArrayList<String>();
     }
 
-    public Bauer(String player, boolean f){
-    	super(player);
-    	this.validmove = new ArrayList<String>();
-    	this.f=f;
-    }
 
 	@Override
 	public ArrayList<String> validMoves(char[][]board, int x, int y)
@@ -67,7 +67,7 @@ public class Bauer extends Figur
 		{
 			String move = this.generateString(x-1, y);
 			this.validmove.add(move);
-			if((f & (x-2)>0 )& board[x-2][y]=='\0') {
+			if((x==6 & (x-2)>0 )& board[x-2][y]=='\0') {
 				move = this.generateString(x-2, y);
 				validmove.add(move);
 			}
@@ -79,7 +79,7 @@ public class Bauer extends Figur
 		if(board[x-1][y]=='\0') {
 			move = this.generateString(x-1, y);
 			this.validmove.add(move);
-			if((f & (x-2)>0 )& board[x-2][y]=='\0') {
+			if((x==6 & (x-2)>0 )& board[x-2][y]=='\0') {
 				move = this.generateString(x-2, y);
 				validmove.add(move);
 			}
@@ -123,7 +123,7 @@ public class Bauer extends Figur
 
 	    	System.out.println(move.getClass());
 			this.validmove.add(move);
-			if((f & (x+2)<8 )& board[x+2][y]=='\0') {
+			if((x==1 & (x+2)<8 )& board[x+2][y]=='\0') {
 				move = this.generateString(x+2, y);
 				validmove.add(move);
 			}
@@ -135,10 +135,10 @@ public class Bauer extends Figur
 		if(board[x+1][y]=='\0') {
 			move = this.generateString(x+1, y);
 			this.validmove.add(move);
-			if((f & (x+2)<8 )& board[x+2][y]=='\0') {
+			if((x==1 & (x+2)<8 )& board[x+2][y]=='\0') {
 				move = this.generateString(x+2, y);
 				validmove.add(move);
-			}
+			}}
 		if(y==0) // linker Rand
 		{
 			if(Character.isUpperCase(board[x+1][y+1]))	// pr�fe ob eine Figur mit gleicher Farbe auf dem Zielfeld steht
@@ -156,4 +156,3 @@ public class Bauer extends Figur
 			}
 		}
 	}
-}

@@ -8,9 +8,6 @@ import de.tuberlin.sese.swtpp.gameserver.model.Player;
 
 public class CrazyhouseGame extends Game implements Serializable{
 
-	/**
-	 *
-	 */
 	private static final long serialVersionUID = 5424778147226994452L;
 
 	/************************
@@ -24,16 +21,16 @@ public class CrazyhouseGame extends Game implements Serializable{
 	// internal representation of the game state
 	//private String board = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/";
 	private String board = "////////";
-	private Board newBoard;
+	
 	/************************
 	 * constructors
 	 ***********************/
 
 	public CrazyhouseGame() {
 		super();
-		this.board="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/";
-		//board="rnbqkbnr/pppppppp/8/2P5/3Q4/8/PPPPP1PP/RNB1KBNR/";	//bauer schlagen
-		newBoard=new Board(board);
+	//this.board="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/";
+		board="rnbq1b1r/6pp/2ppp3/2p1k1P1/2p1nPPP/3PPPPP/PPP2P1P/RNB1KBNR/Pq";	//bauer schlagen
+		 
 
 		// TODO: initialize internal model if necessary 
 	}
@@ -210,7 +207,7 @@ public class CrazyhouseGame extends Game implements Serializable{
 		// Note: This method is for automatic testing. A regular game would not start at some artificial state.
 		//       It can be assumed that the state supplied is a regular board that can be reached during a game.
 		board=state;
-		newBoard=new Board(state);
+		//Board newBoard=new Board(state);
 	}
 
 	@Override
@@ -222,38 +219,44 @@ public class CrazyhouseGame extends Game implements Serializable{
 	@Override
 	public boolean tryMove(String moveString, Player player){
 
-		// �bergibt newBoard objekt den String. bekommt als Antwort 
-		Move move = new Move(moveString,this.newBoard.BoardToString(),player); // erzeuge aus dem String einen Move
+		if(player!=nextPlayer)return false;// �bergibt newBoard objekt den String. bekommt als Antwort 
+		Board newBoard=new Board(board);
+		Move move = new Move(moveString,newBoard.BoardToString(),player); // erzeuge aus dem String einen Move
 		String farbe=this.nextPlayerString();
 		boolean validMove = false;
-		if(farbe=="w")
-		{try {validMove=newBoard.checkMove(moveString, farbe);
-			if(newBoard.Check(farbe, true)){blackPlayer.setWinner();
-				this.finished=true;
-			}else{this.nextPlayer=blackPlayer;/* checke den Move auf g�ltigkeit*/}
-		} catch (Exception e) {e.printStackTrace();}
-		}else{try {validMove=newBoard.checkMove(moveString, farbe);
-			if(newBoard.Check(farbe, true))
-			{whitePlayer.setWinner();
-				this.finished=true;
-			}else{this.nextPlayer=whitePlayer;}
-		} catch (Exception e){
-			e.printStackTrace();}
+		if(farbe=="w") {
+				validMove=newBoard.checkMove(moveString, farbe);
+				gameWon(farbe,newBoard);
+				this.nextPlayer=blackPlayer;/* checke den Move auf g�ltigkeit*/
+		}else{
+				validMove=newBoard.checkMove(moveString, farbe);
+				gameWon(farbe,newBoard);
+				this.nextPlayer=whitePlayer;
 		}
-
 		if(validMove) {												// wenn Move g�ltig
-
 			this.history.add(move);									// f�ge den Move zur History hinzu
 			this.setNextPlayer(nextPlayer);
-		}else{
-			this.setNextPlayer(player);}
+		}else{this.setNextPlayer(player);}
+		
 		this.board=newBoard.BoardToString();
 		System.out.println(this.getBoard());
 		return validMove;
 	}
 
 	// replace with real implementation
-
+	private void gameWon(String player,Board board)
+	{
+			boolean var=board.Check(player, true);
+			if(var) 
+			{
+				if(player=="w")blackPlayer.setWinner();
+				else whitePlayer.setWinner();
+				
+				this.finished=true;
+			}
+			
+		
+	}
 
 
 }

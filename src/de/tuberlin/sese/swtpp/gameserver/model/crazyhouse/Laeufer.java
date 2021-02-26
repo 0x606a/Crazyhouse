@@ -1,8 +1,13 @@
 package de.tuberlin.sese.swtpp.gameserver.model.crazyhouse;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Laeufer extends Figur{
+public class Laeufer extends Figur implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7262522004335271692L;
 	private ArrayList<String> validmove;
 
 	public Laeufer(String player){

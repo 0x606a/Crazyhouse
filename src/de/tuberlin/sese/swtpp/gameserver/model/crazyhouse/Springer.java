@@ -1,9 +1,14 @@
 package de.tuberlin.sese.swtpp.gameserver.model.crazyhouse;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Springer extends Figur
+public class Springer extends Figur implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4775163107469356663L;
 	private ArrayList<String> validmove;
 	
 	public Springer(String player)
@@ -11,7 +16,6 @@ public class Springer extends Figur
 		super(player);
 		this.validmove = new ArrayList<String>(); 
 	}
-	public ArrayList<String> getValidmove(){return validmove;}
 	
 	private ArrayList<String> moveUp(char[][] board, int x, int y)
 	{
@@ -53,7 +57,7 @@ public class Springer extends Figur
 	}
 	
 	public ArrayList<String> validMoves(char[][] board, int x, int y) 
-	{
+	{ 
 		this.validmove.addAll(moveUp(board,x,y));
 		this.validmove.addAll(moveDown(board,x,y));
 		this.validmove.addAll(moveRight(board,x,y));

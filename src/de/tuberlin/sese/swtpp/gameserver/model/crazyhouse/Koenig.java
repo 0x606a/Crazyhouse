@@ -1,9 +1,14 @@
 package de.tuberlin.sese.swtpp.gameserver.model.crazyhouse;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Koenig extends Figur
+public class Koenig extends Figur implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1696824277998864653L;
 	private ArrayList<String> validmove;
 	public Koenig(String player)
 	{

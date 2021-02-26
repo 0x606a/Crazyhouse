@@ -1,8 +1,13 @@
 package de.tuberlin.sese.swtpp.gameserver.model.crazyhouse;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-public class Dame extends Figur {
+public class Dame extends Figur implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4123132931716879521L;
 	private ArrayList<String> validmove;
 
 	public Dame(String player) {
