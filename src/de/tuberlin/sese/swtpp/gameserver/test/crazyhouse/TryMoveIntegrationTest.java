@@ -118,15 +118,42 @@ public class TryMoveIntegrationTest {
 		startGame("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/",true);
 		assertMove("b7-b6",false,false);
 		assertGameState("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/",true,false,false);
+
+		// white's turn, but whites playing
+		startGame("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/",true);
+		assertMove("b7-b6",true,false);
+		assertGameState("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/",true,false,false);
+
+		// black's turn, but white's playing
+		startGame("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/",false);
+		assertMove("b2-b3",true,false);
+		assertGameState("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/",false,false,false);
+
+		// black's turn, but white's playing
+		startGame("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/",false);
+		assertMove("b2-b3",false,false);
+		assertGameState("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/",false,false,false);
+
+
+		// white's turn, not a figure
+		startGame("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/",true);
+		assertMove("f4-f5",true,false);
+		assertGameState("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/",true,false,false);
+
+		// black's turn, not a figure
+		startGame("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/",false);
+		assertMove("f5-f4",false,false);
+		assertGameState("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/",false,false,false);
+
 	}
 
 	@Test
 	public void CheckMateTest() {
 
 		// Game finished by white
-		startGame("rnbq1bnr/6pp/2ppp3/2pkp3/2p5/4P3/PPPP1PPP/RNBQKBNR/",true); // falsches Testfeld (Bauer auf e5 kann nach vorne laufen und verhindert damit Schachmatt)
-		assertMove("d1-f3",true,true);
-		assertGameState("rnbq1bnr/6pp/2ppp3/2pkp3/2p5/4PQ2/PPPP1PPP/RNB1KBNR/",false,true,true);
+		startGame("rnbq1bnr/pp4pp/2ppp3/3k4/2p5/P3P3/PQP1PPPP/RNB1KBNR/",true); // falsches Testfeld (Bauer auf e5 kann nach vorne laufen und verhindert damit Schachmatt)
+		assertMove("b2-d4",true,true);
+		assertGameState("rnbq1bnr/pp4pp/2ppp3/3k4/2pQ4/P3P3/P1P1PPPP/RNB1KBNR/",false,true,true);
 
 	}
 	@Test
@@ -148,12 +175,12 @@ public class TryMoveIntegrationTest {
 
 		//put figur back to board white
 		startGame("rnbqkbnr/2pppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/PP",true);
-		assertMove("P-d4",true,false);
+		assertMove("P-d4",true,true);
 		assertGameState("rnbqkbnr/2pppppp/8/8/3P4/8/PPPPPPPP/RNBQKBNR/P",false,false,false);
 
 		//put figur back to board black
 		startGame("rnbqkbnr/pppppppp/8/8/8/8/2PPPPPP/RNBQKBNR/pp",false);
-		assertMove("p-d4",false,false);
+		assertMove("p-d4",false,true);
 		assertGameState("rnbqkbnr/pppppppp/8/8/3p4/8/2PPPPPP/RNBQKBNR/p",true,false,false);
 
 		//put figur back to spare black
@@ -166,16 +193,46 @@ public class TryMoveIntegrationTest {
 		assertMove("d4-b2",false,true);
 		assertGameState("rnb1kbnr/pppppppp/8/8/8/8/1qPPPPPP/RNBQKBNR/pp",true,false,false);
 
-		//put figur back to spare
-		startGame("rnb1kbnr/1ppppppp/8/8/3q4/8/PPPPPPPP/RNBQKBNR/P",true);
-		assertMove("d4-b2",false,true);
-		assertGameState("rnb1kbnr/1ppppppp/8/8/8/8/PqPPPPPP/RNBQKBNR/Pp",true,false,false);
-
 		//put figur back to board error
 		startGame("rnbqkbnr/2pppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/PP",true);
 		assertMove("Q-d4",true,false);
-		assertGameState("rnbqkbnr/2pppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/PP",false,false,false);
+		assertGameState("rnbqkbnr/2pppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/PP",true,false,false);
 
+		//put figur back to board black big
+		startGame("rnbqkbnr/2pppppp/8/8/8/8/PPPPPPPP/RNB1KBNR/PPq",false);
+		assertMove("q-d4",false,true);
+		assertGameState("rnbqkbnr/2pppppp/8/8/3q4/8/PPPPPPPP/RNB1KBNR/PP",true,false,false);
+
+		//add figur back to board black big
+		startGame("rnb1kbnr/2pppppp/8/2q5/8/4B3/PPPPPPPP/RNB1K1NR/PP",false);
+		assertMove("c5-e3",false,true);
+		assertGameState("rnb1kbnr/2pppppp/8/8/8/4q3/PPPPPPPP/RNB1K1NR/PPb",true,false,false);
+
+
+		//put figur back to board white error last field
+		startGame("1nbqkbnr/2pppppp/8/3r4/8/8/PPPPPPPP/RNBQKBNR/PP",true);
+		assertMove("P-a8",true,false);
+		assertGameState("1nbqkbnr/2pppppp/8/3r4/8/8/PPPPPPPP/RNBQKBNR/PP",true,false,false);
+
+		//put figur back to board black error last field
+		startGame("rnbqkbnr/pppppppp/8/4P3/8/4R3/2PPPPP1/RNBQKBN1/pp",false);
+		assertMove("p-h1",false,false);
+		assertGameState("rnbqkbnr/pppppppp/8/4P3/8/4R3/2PPPPP1/RNBQKBN1/pp",false,false,false);
+
+		//put figur back to board error own figure
+		startGame("1nbqkbnr/2pppppp/8/3r4/8/8/PPPPPPPP/RNBQKBNR/PP",true);
+		assertMove("P-d2",true,false);
+		assertGameState("1nbqkbnr/2pppppp/8/3r4/8/8/PPPPPPPP/RNBQKBNR/PP",true,false,false);
+
+		//put figur back to board black error wrong color
+		startGame("1nbqkbnr/2pppppp/8/3r4/8/8/PPPPPPPP/RNBQKBNR/PP",false);
+		assertMove("P-g4",false,false);
+		assertGameState("1nbqkbnr/2pppppp/8/3r4/8/8/PPPPPPPP/RNBQKBNR/PP",false,false,false);
+
+		//put figur back to board black error last field
+		startGame("rnbqkbnr/pppppppp/8/4P3/8/4R3/2PPPPP1/RNBQKBN1/pp",true);
+		assertMove("p-g5",true,false);
+		assertGameState("rnbqkbnr/pppppppp/8/4P3/8/4R3/2PPPPP1/RNBQKBN1/pp",true,false,false);
 	}
 
 	@Test
@@ -190,15 +247,60 @@ public class TryMoveIntegrationTest {
 	@Test
 	public void BauerRuleTest() {
 
-		//Bauer Dame Tausch white
-		startGame("rn1qkbnr/ppPppppp/8/8/bp6/8/PPPP1PPP/RNBQKBNR/",true);
-		assertMove("c7-c8",true,true);
-		assertGameState("rnQqkbnr/pp1ppppp/8/8/bp6/8/PPPP1PPP/RNBQKBNR/",false,false,false);
-
 		//Bauer Dame Tausch black
 		startGame("rnbqkbnr/pp1ppppp/8/4P3/6K1/8/PPPPpPPP/RNBQ1BNR/",false);
 		assertMove("e2-e1",false,true);
 		assertGameState("rnbqkbnr/pp1ppppp/8/4P3/6K1/8/PPPP1PPP/RNBQqBNR/",true,false,false);
+
+		//Bauer Dame Tausch white
+		startGame("rn1qkbnr/ppPppppp/8/8/bp6/8/PPPP1PPP/RNBQKBNR/",true);
+		assertMove("c7-c8",true,true);
+		assertGameState("rnQqkbnr/pp1ppppp/8/8/bp6/8/PPPP1PPP/RNBQKBNR/",false,false,false);
+	}
+
+	@Test
+	public void BauerBigMoveTest() {
+
+		//Bauer Doppelschritt white
+		startGame("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/",true);
+		assertMove("a2-a4",true,true);
+		assertGameState("rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR/",false,false,false);
+
+		//Bauer Doppelschritt white
+		startGame("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/",true);
+		assertMove("h2-h4",true,true);
+		assertGameState("rnbqkbnr/pppppppp/8/8/7P/8/PPPPPPP1/RNBQKBNR/",false,false,false);
+
+		//Bauer Doppelschritt fail white
+		startGame("rnbqkbnr/1ppppppp/8/8/8/p7/PPPPPPPP/RNBQKBNR/",true);
+		assertMove("a2-a4",true,false);
+		assertGameState("rnbqkbnr/1ppppppp/8/8/8/p7/PPPPPPPP/RNBQKBNR/",true,false,false);
+
+		//Bauer Doppelschritt fail white
+		startGame("rnbqkbnr/ppppppp1/8/8/8/7p/PPPPPPPP/RNBQKBNR/",true);
+		assertMove("h2-h4",true,false);
+		assertGameState("rnbqkbnr/ppppppp1/8/8/8/7p/PPPPPPPP/RNBQKBNR/",true,false,false);
+
+		//Bauer Doppelschritt black
+		startGame("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/",false);
+		assertMove("a7-a5",false,true);
+		assertGameState("rnbqkbnr/1ppppppp/8/p7/8/8/PPPPPPPP/RNBQKBNR/",true,false,false);
+
+		//Bauer Doppelschritt black
+		startGame("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/",false);
+		assertMove("h7-h5",false,true);
+		assertGameState("rnbqkbnr/ppppppp1/8/7p/8/8/PPPPPPPP/RNBQKBNR/",true,false,false);
+
+		//Bauer Doppelschritt fail black
+		startGame("rnbqkbnr/pppppppp/P7/8/8/8/1PPPPPPP/RNBQKBNR/",true);
+		assertMove("a7-a5",true,false);
+		assertGameState("rnbqkbnr/pppppppp/P7/8/8/8/1PPPPPPP/RNBQKBNR/",true,false,false);
+
+		//Bauer Doppelschritt fail black
+		startGame("rnbqkbnr/pppppppp/7P/8/8/8/1PPPPPPP/RNBQKBNR/",true);
+		assertMove("h7-h5",true,false);
+		assertGameState("rnbqkbnr/pppppppp/7P/8/8/8/1PPPPPPP/RNBQKBNR/",true,false,false);
+
 	}
 
 	@Test
@@ -403,9 +505,9 @@ public class TryMoveIntegrationTest {
 	public void KoenigWhiteRightMoveTest() {
 
 		//move ok, enemy on destination oben
-		startGame("rnbqkbnr/ppp1pppp/8/3p4/3K4/8/PPPPPPPP/RNBQ1BNR/",true); // test falsch könig kann nicht schlagen weil er danach im Schach stehen würde
+		startGame("rnbqkbnr/ppppppp1/8/3p4/3K4/8/PPPPPPPP/RNBQ1BNR/",true);
 		assertMove("d4-d5",true,true);
-		assertGameState("rnbqkbnr/ppp1pppp/8/3K4/8/8/PPPPPPPP/RNBQ1BNR/P",false,false,false);
+		assertGameState("rnbqkbnr/ppppppp1/8/3K4/8/8/PPPPPPPP/RNBQ1BNR/P",false,false,false);
 
 		//move ok, enemy on destination rechts oben
 		startGame("rnbqkbnr/pppp1ppp/8/4p3/3K4/8/PPPPPPPP/RNBQ1BNR/",true); // funktioniert im Spiel
@@ -429,18 +531,18 @@ public class TryMoveIntegrationTest {
 
 		//move ok
 		startGame("rnbq1bnr/pppppppp/8/8/3k4/8/PPPPPPPP/RNBQKBNR/",false);
-		assertMove("d4-d3",false,true);
-		assertGameState("rnbq1bnr/pppppppp/8/8/8/3k4/PPPPPPPP/RNBQKBNR/",true,false,false);
+		assertMove("d4-d5",false,true);
+		assertGameState("rnbq1bnr/pppppppp/8/3k4/8/8/PPPPPPPP/RNBQKBNR/",true,false,false);
 
 		//move ok, enemy on destination unten
-		startGame("rnbq1bnr/pppppppp/8/8/3k4/3P4/PPP1PPPP/RNBQKBNR/",false);
-		assertMove("d4-d3",false,true);
-		assertGameState("rnbq1bnr/pppppppp/8/8/8/3k4/PPP1PPPP/RNBQKBNR/p",true,false,false);
+		startGame("rnbq1bnr/pppppppp/8/2k5/2P5/8/PPP1PPPP/RNBQKBNR/",false);
+		assertMove("c5-c4",false,true);
+		assertGameState("rnbq1bnr/pppppppp/8/8/2k5/8/PPP1PPPP/RNBQKBNR/p",true,false,false);
 
 		//move ok, enemy on destination links unten
-		startGame("rnbq1bnr/pppppppp/8/8/3k4/2P5/PPP1PPPP/RNBQKBNR/",false);
-		assertMove("d4-c3",false,true);
-		assertGameState("rnbq1bnr/pppppppp/8/8/8/2k5/PPP1PPPP/RNBQKBNR/p",true,false,false);
+		startGame("rnbq1bnr/pppppppp/8/2k5/1P6/8/PPP1PPPP/RNBQKBNR/",false);
+		assertMove("c5-b4",false,true);
+		assertGameState("rnbq1bnr/pppppppp/8/8/1k6/8/PPP1PPPP/RNBQKBNR/p",true,false,false);
 
 		//move ok, enemy on destination links
 		startGame("rnbq1bnr/pppppppp/8/8/2Pk4/8/PPP1PPPP/RNBQKBNR/",false);
@@ -458,9 +560,9 @@ public class TryMoveIntegrationTest {
 	public void KoenigBlackRightMoveTest() {
 
 		//move ok, enemy on destination oben
-		startGame("rnbq1bnr/pppppppp/8/3P4/3k4/8/PPP1PPPP/RNBQKBNR/",false);
-		assertMove("d4-d5",false,true);
-		assertGameState("rnbq1bnr/pppppppp/8/3k4/8/8/PPP1PPPP/RNBQKBNR/p",true,false,false);
+		startGame("rnbq1bnr/pppppppp/8/1P6/1k6/8/PPP1PPPP/RNBQKBNR/",false);
+		assertMove("b4-b5",false,true);
+		assertGameState("rnbq1bnr/pppppppp/8/1k6/8/8/PPP1PPPP/RNBQKBNR/p",true,false,false);
 
 		//move ok, enemy on destination rechts oben
 		startGame("rnbq1bnr/pppppppp/8/4P3/3k4/8/PPP1PPPP/RNBQKBNR/",false);
@@ -473,9 +575,9 @@ public class TryMoveIntegrationTest {
 		assertGameState("rnbq1bnr/pppppppp/8/8/4k3/8/PPP1PPPP/RNBQKBNR/p",true,false,false);
 
 		//move ok, enemy on destination rechts unten
-		startGame("rnbq1bnr/pppppppp/8/8/3k4/4P3/PPP1PPPP/RNBQKBNR/",false);
-		assertMove("d4-e3",false,true);
-		assertGameState("rnbq1bnr/pppppppp/8/8/8/4k3/PPP1PPPP/RNBQKBNR/p",true,false,false);
+		startGame("rnbq1bnr/pppppppp/8/1k6/2P5/8/PPP1PPPP/RNBQKBNR/",false);
+		assertMove("b5-c4",false,true);
+		assertGameState("rnbq1bnr/pppppppp/8/8/2k5/8/PPP1PPPP/RNBQKBNR/p",true,false,false);
 
 	}
 
