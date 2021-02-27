@@ -1,5 +1,5 @@
 
-package de.tuberlin.sese.swtpp.gameserver.model.crazyhouse;
+package src.de.tuberlin.sese.swtpp.gameserver.model.crazyhouse;
 import java.io.Serializable;
 
 import de.tuberlin.sese.swtpp.gameserver.model.Game;
@@ -219,7 +219,7 @@ public class CrazyhouseGame extends Game implements Serializable{
 	@Override
 	public boolean tryMove(String moveString, Player player){
 
-		if(player!=nextPlayer)return false;// �bergibt newBoard objekt den String. bekommt als Antwort 
+		if(player!=nextPlayer ||!checkString(moveString))return false;// �bergibt newBoard objekt den String. bekommt als Antwort 
 		Board newBoard=new Board(board);
 		Move move = new Move(moveString,newBoard.BoardToString(),player); // erzeuge aus dem String einen Move
 		String farbe=this.nextPlayerString();
@@ -256,6 +256,17 @@ public class CrazyhouseGame extends Game implements Serializable{
 			}
 			
 		
+	}
+	public boolean checkString(String moveString) 
+	{
+		int a=(int)moveString.charAt(0);
+		int b=(int)moveString.charAt(1);
+		int c=(int)moveString.charAt(3);
+		int d=(int)moveString.charAt(4);
+		if(a >= 97&& a<= 104  && b >= 49&& b <=56 &&c >= 97&& c<= 104  && d >= 49&& d <=56){return true;}// wenn String gleich Zug auf den Board 
+		if( a=='k'||a=='K'||a=='q'||a=='Q'||a=='b'||a=='B'||a=='n'||a=='N'|| a=='r'||a=='R'||a=='p'||a=='P'&&c >= 97&& c<= 104  && d >= 49&& d <=56) {return true;}
+		
+		return false;
 	}
 
 
