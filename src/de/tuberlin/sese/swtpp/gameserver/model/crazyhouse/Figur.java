@@ -1,7 +1,6 @@
 package de.tuberlin.sese.swtpp.gameserver.model.crazyhouse;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 
 public abstract class Figur implements Serializable

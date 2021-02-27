@@ -4,15 +4,6 @@ import java.util.ArrayList;
 
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import de.tuberlin.sese.swtpp.gameserver.model.crazyhouse.Springer;
-import de.tuberlin.sese.swtpp.gameserver.model.crazyhouse.Bauer;
-import de.tuberlin.sese.swtpp.gameserver.model.crazyhouse.Dame;
-import de.tuberlin.sese.swtpp.gameserver.model.crazyhouse.Koenig;
-import de.tuberlin.sese.swtpp.gameserver.model.crazyhouse.Laeufer;
-import de.tuberlin.sese.swtpp.gameserver.model.crazyhouse.Turm;
 
 public class Board implements Serializable{
     
