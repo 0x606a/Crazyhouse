@@ -42,61 +42,97 @@ public class Board implements Serializable{
 					cnt --;
 					j++;}}}
 
+		sparePartsCheck(b, i, cnt);
+	}
+
+	public void sparePartsCheck(String b, int i, int cnt) {
+
 		Spare_parts = new String("");
 		if(b.length()-cnt <b.length()) {
 			for(i=b.length()-cnt; i< b.length(); i++){
-				Spare_parts += b.charAt(i);}}}
-
+				Spare_parts += b.charAt(i);}}
+	}
 	//checks if move is valid; if yes: does move, if no: throws runtimeexception
 	public boolean checkMove(String move, String player){
+
+		boolean rueckgabe = false;
+		if(move.length()==4) {
+			rueckgabe = checkMoveSpare(move, player);
+		}
+
+		if(move.length()==5) {
+			rueckgabe = checkMoveField(move, player);
+		}
+
+		return rueckgabe;
+	}
+
+
+	public boolean checkMoveSpare(String move, String player){
+
 		char figure='0'; int [] co; char [][] dest = new char[8][8];
 
 		for(int i= 0; i<8; i++) {dest[i] = this.getBoard()[i].clone();}
 
-		if(move.length()==4) {figure= move.charAt(0);
+		figure= move.charAt(0);
 
-			if(player=="b" && ((int) figure)<97)  return false;
+		if (!check(player, figure)) return false;
 
-			if(player=="w" && ((int) figure)>90)  return false;
+		co = dest_coord(move.substring(2));
 
-			co = dest_coord(move.substring(2));
+		int dest_x = co[0]; int dest_y = co[1];
 
-			int dest_x = co[0]; int dest_y = co[1];
+		if(dest[dest_y][dest_x]!='\0') return false;
+		dest = this.copy().getBoard();
 
-			if(dest[dest_y][dest_x]!='\0') return false;
-			dest = this.copy().getBoard();
+		if((Character.toLowerCase(figure) =='p')&&(dest_y==0 || dest_y==7)) return false;
+		//if(figure=='P')figure='F';
+		//if(figure=='p')figure='f';
 
-			if((figure=='P' || figure =='p')&&(dest_y==0 || dest_y==7)) return false;
-			//if(figure=='P')figure='F';
-			//if(figure=='p')figure='f';
+		dest [dest_y][dest_x] = figure;
 
-			dest [dest_y][dest_x] = figure;
+		if(takeSpare_part(figure)) {board=dest; return true;}else{return false;}}
 
-			if(takeSpare_part(figure)) {board=dest; return true;}else{return false;}}
+	public boolean check(String player, char figure) {
+		if(player=="b" && ((int) figure)<97)  return false;
+
+		if(player=="w" && ((int) figure)>90)  return false;
+		return true;
+	}
+
+
+
+	public boolean checkMoveField(String move, String player){
+
+
+		char figure='0'; char [][] dest = new char[8][8];
+
+		for(int i= 0; i<8; i++) {dest[i] = this.getBoard()[i].clone();}
 
 		//figur aus feld
-		if(move.length()==5) {int x = ((int) move.charAt(0))-97; int y = 7-(((int) move.charAt(1))-49);
+		int x = ((int) move.charAt(0))-97; int y = 7-(((int) move.charAt(1))-49);
 
-			figure = board[y][x];
+		figure = board[y][x];
 
-			if(figure=='\0') {System.out.println("no token chosen");return false;}
+		if(figure=='\0') return false;
 
-			if(player=="b" && ((int) figure)<97)  return false;
+		if(player=="b" && ((int) figure)<97)  return false;
 
-			if(player=="w" && ((int) figure)>90)  return false;
-			ArrayList<String> val_moves;
-			//figur aufrufen(player Ã¼bergeben als String)
-			Figur f= switchFigur(figure, player);
+		if(player=="w" && ((int) figure)>90)  return false;
 
-			val_moves= f.validMoves(board, y, x);
-			val_moves=f.filterMoves(this, val_moves, y, x);
+		ArrayList<String> val_moves;
+		//figur aufrufen(player Ã¼bergeben als String)
+		Figur f= switchFigur(figure, player);
 
-			for(int s = 0;s<val_moves.size(); s++) {
-				String temp=""+ move.charAt(0)+move.charAt(1)+'-'+ val_moves.get(s); val_moves.set(s, temp);}
-			//zÃ¼ge vergleichen
+		val_moves= f.validMoves(board, y, x);
+		val_moves=f.filterMoves(this, val_moves, y, x);
 
-			if(!val_moves.contains(move)) return false;
-			else { this.doMoveBoard(move, x, y, figure);return true;}}else {return false;}}
+		for(int s = 0;s<val_moves.size(); s++) {
+			String temp=""+ move.charAt(0)+move.charAt(1)+'-'+ val_moves.get(s); val_moves.set(s, temp);}
+		//zÃ¼ge vergleichen
+
+		if(!val_moves.contains(move)) return false;
+		else {this.doMoveBoard(move, x, y, figure);return true;}}
 
 	public void doMoveBoard(String move, int x, int y, char figure) {
 		//figur ziehen
@@ -185,24 +221,27 @@ public class Board implements Serializable{
 		return temp;
 	}
 	public Figur switchFigur(char figure, String player) {
-		if(figure=='k' || figure=='K') {
+		figure = Character.toLowerCase(figure);
+		if(figure=='k') {
 			return new Koenig(player);
-
 		}
-		if(figure=='q' || figure=='Q') {
+
+		if(figure=='q') {
 			return new Dame(player);
-
 		}
 
-		if(figure=='B' || figure=='b') {
+		if(figure=='b') {
 			return new Laeufer(player);
 		}
-		if(figure=='n' || figure=='N') {
+
+		if(figure=='n') {
 			return new Springer(player);
 		}
-		if(figure=='r' || figure=='R') {
+
+		if(figure=='r') {
 			return new Turm(player);
 		}
+
 		else {
 			return new Bauer(player);
 		}
@@ -245,9 +284,12 @@ public class Board implements Serializable{
 		coordinates= dest_coord(co);
 		int x= coordinates[0];
 		int y= coordinates[1];
+
 		for(int pos_y=0; pos_y<=7; pos_y++) {
+
 			for(int pos_x=0; pos_x<=7;pos_x++) {
 				char figure= board[pos_y][pos_x];
+
 				if((player=="w" && ((int)figure)>96) || player=="b" && ((int)figure)<90 &&((int)figure)>10) {
 					String pp;
 					if(player=="b") pp="w";
@@ -257,13 +299,22 @@ public class Board implements Serializable{
 				}
 			}
 		}
-		if(poss_Moves.contains(xytoString(x,y))) {
-			if(checkmate) return isCheckMate(k_Moves, poss_Moves);
-			else return true;
+
+		if (check2(poss_Moves, x, y, checkmate)) {
+			return isCheckMate(k_Moves, poss_Moves);
 		}
 		return false;
 
 	}
+
+	public boolean check2(ArrayList<String> poss_Moves, int x, int y, boolean checkmate) {
+		if(poss_Moves.contains(xytoString(x,y))) {
+			if(checkmate) return true;
+			else return false;
+		}
+		return false;
+	}
+
 	private boolean isCheckMate(ArrayList<String> k_Moves, ArrayList<String> poss_Moves) {
 		int cnt = 0;
 		for(String m:k_Moves) {

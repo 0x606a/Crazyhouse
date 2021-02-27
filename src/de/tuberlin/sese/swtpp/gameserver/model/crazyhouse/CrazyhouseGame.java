@@ -1,5 +1,5 @@
 
-package src.de.tuberlin.sese.swtpp.gameserver.model.crazyhouse;
+package de.tuberlin.sese.swtpp.gameserver.model.crazyhouse;
 import java.io.Serializable;
 
 import de.tuberlin.sese.swtpp.gameserver.model.Game;
@@ -21,18 +21,18 @@ public class CrazyhouseGame extends Game implements Serializable{
 	// internal representation of the game state
 	//private String board = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/";
 	private String board = "////////";
-	
+
 	/************************
 	 * constructors
 	 ***********************/
 
 	public CrazyhouseGame() {
 		super();
-	//this.board="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/";
+		//this.board="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/";
 		board="rnbq1bnr/6pp/2ppp3/2pkp3/2p5/4P3/PPPP1PPP/RNBQKBNR/";	//bauer schlagen
-		 
 
-		// TODO: initialize internal model if necessary 
+
+		// TODO: initialize internal model if necessary
 	}
 
 	public String getType() {
@@ -219,60 +219,73 @@ public class CrazyhouseGame extends Game implements Serializable{
 	@Override
 	public boolean tryMove(String moveString, Player player){
 
-		if(player!=nextPlayer ||!checkString(moveString))return false;// �bergibt newBoard objekt den String. bekommt als Antwort 
+		if(player!=nextPlayer ||!checkString(moveString))return false;// �bergibt newBoard objekt den String. bekommt als Antwort
 		Board newBoard=new Board(board);
 		Move move = new Move(moveString,newBoard.BoardToString(),player); // erzeuge aus dem String einen Move
 		String farbe=this.nextPlayerString();
 		boolean validMove = false;
 		if(farbe=="w") {
-				validMove=newBoard.checkMove(moveString, farbe);
-				gameWon(farbe,newBoard);
-				this.nextPlayer=blackPlayer;/* checke den Move auf g�ltigkeit*/
+			validMove=newBoard.checkMove(moveString, farbe);
+			gameWon(farbe,newBoard);
+			this.nextPlayer=blackPlayer;/* checke den Move auf g�ltigkeit*/
 		}else{
-				validMove=newBoard.checkMove(moveString, farbe);
-				gameWon(farbe,newBoard);
-				this.nextPlayer=whitePlayer;
+			validMove=newBoard.checkMove(moveString, farbe);
+			gameWon(farbe,newBoard);
+			this.nextPlayer=whitePlayer;
 		}
 		if(validMove) {												// wenn Move g�ltig
 			this.history.add(move);									// f�ge den Move zur History hinzu
 			this.setNextPlayer(nextPlayer);
 		}else{this.setNextPlayer(player);}
-		
+
 		this.board=newBoard.BoardToString();
-		System.out.println(this.getBoard());
+
 		return validMove;
 	}
 
 	// replace with real implementation
 	private void gameWon(String player,Board board)
 	{
-			boolean var=board.Check(player, true);
-			if(var) 
-			{
-				if(player=="w")blackPlayer.setWinner();
-				else whitePlayer.setWinner();
-				
-				this.finished=true;
-			}
-			
-		
+		boolean var=board.Check(player, true);
+		if(var)
+		{
+			if(player=="w")blackPlayer.setWinner();
+			else whitePlayer.setWinner();
+
+			this.finished=true;
+		}
+
+
 	}
-	public boolean checkString(String moveString) 
+	public boolean checkString(String moveString)
 	{
 		int a=(int)moveString.charAt(0);
 		int b=(int)moveString.charAt(1);
 		int c=(int)moveString.charAt(2);
 		int d=(int)moveString.charAt(3);
-		if(moveString.length()==5) {
-			
+		if(check4(moveString.length())) {
+
 			int e=(int)moveString.charAt(4);
-			if(a >= 97&& a<= 104  && b >= 49&& b <=56 &&d >= 97&& d<= 104  && e >= 49&& e <=56){return true;}// wenn String gleich Zug auf den Board 
-			
+			return check5(a, b, c, d, e);
+			// wenn String gleich Zug auf den Board
+
 		}
 		else {
-			if(((a==75||a==107||a==113||a==81||a==98||a==66||a==110||a==78|| a==82||a==114||a==80||a==112)&&b==45) &&c >= 97&& c<= 104  && d >= 49&& d <=56) {return true;}	
+			if((check6(a) &&b==45) &&c >= 97&& c<= 104  && d >= 49&& d <=56) {return true;}
 		}
 
 		return false;
+	}
+
+	public boolean check6(int a) {
+		return (a==75||a==107||a==113||a==81||a==98||a==66||a==110||a==78|| a==82||a==114||a==80||a==112);
+	}
+
+	public boolean check5(int a, int b, int c, int d, int e) {
+		return (a >= 97&& a<= 104  && b >= 49&& b <=56 &&d >= 97&& d<= 104  && e >= 49&& e <=56);
+	}
+
+	public boolean check4(int x) {
+		return x == 5;
 	}
 }
