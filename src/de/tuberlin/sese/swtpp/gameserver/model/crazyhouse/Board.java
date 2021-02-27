@@ -18,99 +18,86 @@ public class Board implements Serializable{
 		int cnt= b.length();
 
 		for (int i=0; i<8;i++) {
-			for(int j=0;j<8;j++) {
-				board[i][j]='\0';
-			}
-		}
+			for(int j=0;j<8;j++) {board[i][j]='\0';}}
 
 		int i= 0;
-		while ( i<8){
-			int j = 0;
-			while (true){
-				char temp= b.charAt(b.length()-cnt);
-				if(temp=='/'){
-					i++;
-					cnt--;
-					break;
-				}
+		while ( i<8){int j = 0;
+
+			while (true){char temp= b.charAt(b.length()-cnt);
+
+				if(temp=='/'){i++; cnt--; break;}
+
 				if((int) temp>48 && (int) temp <58){
 					int cur = (int) temp -48;
 					if(j+cur>7){
 
 						j= cur-(7-j);
 						cnt --;
-					}
-					else {
+					}else {
 						j+=cur;
-						cnt--;
-					}
-				}
+						cnt--;}}
+
 				else{
 					board[i][j] = temp;
 					cnt --;
-					j++;
-				}
-			}
-		}
+					j++;}}}
 
 		Spare_parts = new String("");
 		if(b.length()-cnt <b.length()) {
 			for(i=b.length()-cnt; i< b.length(); i++){
-				Spare_parts += b.charAt(i);
-			}
-		}
+				Spare_parts += b.charAt(i);}}}
 
-
-	}
 	//checks if move is valid; if yes: does move, if no: throws runtimeexception
 	public boolean checkMove(String move, String player){
-		char figure='0';
-		int [] co;
-		char [][] dest = new char[8][8];
+		char figure='0'; int [] co; char [][] dest = new char[8][8];
+
 		for(int i= 0; i<8; i++) {dest[i] = this.getBoard()[i].clone();}
 
-		if(move.length()==4) {
-			figure= move.charAt(0);
-			if(player=="b" && ((int) figure)<97) {System.out.println("Nicht deine Figur!"); return false;}
-			if(player=="w" && ((int) figure)>90) {System.out.println("Nicht deine Figur!"); return false;}
+		if(move.length()==4) {figure= move.charAt(0);
+
+			if(player=="b" && ((int) figure)<97)  return false;
+
+			if(player=="w" && ((int) figure)>90)  return false;
+
 			co = dest_coord(move.substring(2));
-			int dest_x = co[0];
-			int dest_y = co[1];
-			if(dest[dest_y][dest_x]!='\0') { System.out.println("auf dem ausgewählten Feld steht bereits eine Figur!");return false;}
+
+			int dest_x = co[0]; int dest_y = co[1];
+
+			if(dest[dest_y][dest_x]!='\0') return false;
 			dest = this.copy().getBoard();
-			if((figure=='P' || figure =='p')&&(dest_y==0 || dest_y==7)) {System.out.println("nicht auf den spielrand springen!");return false;}
+
+			if((figure=='P' || figure =='p')&&(dest_y==0 || dest_y==7)) return false;
 			//if(figure=='P')figure='F';
 			//if(figure=='p')figure='f';
 
 			dest [dest_y][dest_x] = figure;
 
-			if(takeSpare_part(figure)) {board=dest; return true;}
-			else {return false;}
-		}
+			if(takeSpare_part(figure)) {board=dest; return true;}else{return false;}}
 
 		//figur aus feld
-		if(move.length()==5) {
-			int x = ((int) move.charAt(0))-97;
-			int y = 7-(((int) move.charAt(1))-49);
+		if(move.length()==5) {int x = ((int) move.charAt(0))-97; int y = 7-(((int) move.charAt(1))-49);
+
 			figure = board[y][x];
+
 			if(figure=='\0') {System.out.println("no token chosen");return false;}
-			if(player=="b" && ((int) figure)<97) {System.out.println("Nicht deine Figur!"); return false;}
-			if(player=="w" && ((int) figure)>90) {System.out.println("Nicht deine Figur!"); return false;}
+
+			if(player=="b" && ((int) figure)<97)  return false;
+
+			if(player=="w" && ((int) figure)>90)  return false;
 			ArrayList<String> val_moves;
 			//figur aufrufen(player Ã¼bergeben als String)
 			Figur f= switchFigur(figure, player);
+
 			val_moves= f.validMoves(board, y, x);
 			val_moves=f.filterMoves(this, val_moves, y, x);
+
 			for(int s = 0;s<val_moves.size(); s++) {
-				String temp=""+ move.charAt(0)+move.charAt(1)+'-'+ val_moves.get(s);
-				val_moves.set(s, temp);
-			}
+				String temp=""+ move.charAt(0)+move.charAt(1)+'-'+ val_moves.get(s); val_moves.set(s, temp);}
 			//zÃ¼ge vergleichen
+
 			if(!val_moves.contains(move)) return false;
-			else { this.doMoveBoard(move, x, y, figure);return true;}
-		}
-		else {return false; }
-	}
+			else { this.doMoveBoard(move, x, y, figure);return true;}}else {return false;}}
+
 	public void doMoveBoard(String move, int x, int y, char figure) {
 		//figur ziehen
 		char [][] dest = board.clone();
@@ -124,9 +111,6 @@ public class Board implements Serializable{
 			else { temp -= 32;}
 			addSpare_part(temp);
 		}
-		if(figure=='F')figure='P';
-		if(figure=='f')figure='p';
-
 		if((figure=='P') && dest_y==0) {
 			figure= 'Q';
 		}
@@ -225,9 +209,7 @@ public class Board implements Serializable{
 	}
 	//getters
 	public char[][] getBoard(){return this.board;}
-	public String getSpare_parts() {
-		return Spare_parts;
-	}
+
 	private int[] dest_coord(String co){
 		int [] c= new int[2];
 		c[0] = ((int) co.charAt(0))-97;
