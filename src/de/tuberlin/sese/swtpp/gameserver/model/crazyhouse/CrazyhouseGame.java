@@ -261,13 +261,18 @@ public class CrazyhouseGame extends Game implements Serializable{
 	{
 		int a=(int)moveString.charAt(0);
 		int b=(int)moveString.charAt(1);
-		int c=(int)moveString.charAt(3);
-		int d=(int)moveString.charAt(4);
-		if(a >= 97&& a<= 104  && b >= 49&& b <=56 &&c >= 97&& c<= 104  && d >= 49&& d <=56){return true;}// wenn String gleich Zug auf den Board 
-		if(((a==75||a==107||a==113||a==81||a==98||a==66||a==110||a==78|| a==82||a==114||a==80||a==112)&&b==45) &&c >= 97&& c<= 104  && d >= 49&& d <=56) {return true;}
-		
+		int c=(int)moveString.charAt(2);
+		int d=(int)moveString.charAt(3);
+		if(moveString.length()==5) {
+			
+			int e=(int)moveString.charAt(4);
+			if(a >= 97&& a<= 104  && b >= 49&& b <=56 &&d >= 97&& d<= 104  && e >= 49&& e <=56){return true;}// wenn String gleich Zug auf den Board 
+			
+		}
+		else {
+			if(((a==75||a==107||a==113||a==81||a==98||a==66||a==110||a==78|| a==82||a==114||a==80||a==112)&&b==45) &&c >= 97&& c<= 104  && d >= 49&& d <=56) {return true;}	
+		}
+
 		return false;
 	}
-
-
 }
