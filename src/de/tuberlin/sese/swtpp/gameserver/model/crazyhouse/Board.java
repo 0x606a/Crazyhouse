@@ -28,21 +28,24 @@ public class Board implements Serializable{
 				if(temp=='/'){i++; cnt--; break;}
 
 				if((int) temp>48 && (int) temp <58){
+
 					int cur = (int) temp -48;
-					if(j+cur>7){
+					j = check7(j, cur);
 
-						j= cur-(7-j);
-						cnt --;
-					}else {
-						j+=cur;
-						cnt--;}}
+					cnt--;
 
-				else{
+				}else{
 					board[i][j] = temp;
 					cnt --;
 					j++;}}}
 
-		sparePartsCheck(b, i, cnt);
+		sparePartsCheck(b, i, cnt);}
+
+	public int check7(int j, int cur) {
+		if(j+cur>7)
+			return cur-(7-j);
+		else
+			return j+=cur;
 	}
 
 	public void sparePartsCheck(String b, int i, int cnt) {
